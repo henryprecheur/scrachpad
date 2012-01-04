@@ -1,0 +1,62 @@
+#!/usr/bin/env rc
+# vim:set ts=4 sw=4:
+
+if (test $#* -ne 1) {
+    echo 'Usage:
+  '$0' path'
+    exit 1
+}
+
+rfc3339=$home/code/rfc3339/rfc3339.py
+
+fn read {
+    echo -n $* ; awk '{print;exit}'
+}
+
+fn edit {
+   gvim --nofork '+set ft=text tw=0' $*
+}
+
+fn transaction {
+    ref=`{mktemp}
+    cat > $ref
+
+    # Keep the original to compare later
+    tmp=`{mktemp}
+    cat $ref > $tmp
+
+    edit $tmp
+
+    # If the file wasn't modified, get out
+    if (cmp $ref $tmp 2>1 > /dev/null) {
+        rm -f $ref $tmp
+    } else {
+        while (test -f $tmp) {
+            switch (`{read 'Publish,Edit,Delete? '}) {
+                case [Pp]*
+                    mv $tmp $*'/'`{$rfc3339}
+                case [Dd]*
+                    rm $tmp
+                case [Ee]*
+                    echo Editing
+                    edit $tmp
+                case *
+                    echo Invalid command
+            }
+        }
+        rm $ref
+    }
+}
+
+fn reply {
+    awk '{ if (length($0) == 0) { print ">" } else { print "> "$0 } }'
+}
+
+if (test -f $*) {
+    reply < $* | transaction `{dirname $*}
+}
+if (test -d $*) {
+    transaction $* < /dev/null
+} else {
+    mkdir $* && transaction $* < /dev/null
+}
