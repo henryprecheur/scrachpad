@@ -8,9 +8,11 @@ if (test $#* -ne 1) {
 }
 
 rfc3339=$home/code/rfc3339/rfc3339.py
+start=$rfc3339
 
 fn read {
-    echo -n $* ; awk '{print;exit}'
+    echo -n $* > /dev/tty
+    awk '{print;exit}' < /dev/tty
 }
 
 fn edit {
@@ -34,7 +36,9 @@ fn transaction {
         while (test -f $tmp) {
             switch (`{read 'Publish,Edit,Delete? '}) {
                 case [Pp]*
-                    mv $tmp $*'/'`{$rfc3339}
+                    filename = $*'/'`{$rfc3339}
+                    mv $tmp $filename
+                    ln -f $filename $*'/'.last
                 case [Dd]*
                     rm $tmp
                 case [Ee]*
@@ -56,7 +60,13 @@ if (test -f $*) {
     reply < $* | transaction `{dirname $*}
 }
 if (test -d $*) {
-    transaction $* < /dev/null
+    if (test -f $*'/'.last)
+        switch (`{read 'Reply to last? [Y/n] '}) {
+            case [Nn]
+                transaction $* < /dev/null
+            case *
+                reply < $*'/.last' | transaction $*
+        }
 } else {
     mkdir $* && transaction $* < /dev/null
 }
