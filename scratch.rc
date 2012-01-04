@@ -36,9 +36,7 @@ fn transaction {
         while (test -f $tmp) {
             switch (`{read 'Publish,Edit,Delete? '}) {
                 case [Pp]*
-                    filename = $*'/'`{$rfc3339}
-                    mv $tmp $filename
-                    ln -f $filename $*'/'.last
+                    mv $tmp $*'/'`{$rfc3339}
                 case [Dd]*
                     rm $tmp
                 case [Ee]*
@@ -60,13 +58,7 @@ if (test -f $*) {
     reply < $* | transaction `{dirname $*}
 }
 if (test -d $*) {
-    if (test -f $*'/'.last)
-        switch (`{read 'Reply to last? [Y/n] '}) {
-            case [Nn]
-                transaction $* < /dev/null
-            case *
-                reply < $*'/.last' | transaction $*
-        }
+    transaction $* < /dev/null
 } else {
     mkdir $* && transaction $* < /dev/null
 }
