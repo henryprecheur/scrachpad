@@ -7,8 +7,9 @@ if (test $#* -ne 1) {
     exit 1
 }
 
-rfc3339=$home/code/rfc3339/rfc3339.py
-start=$rfc3339
+fn rfc3339 {
+    date +%FT%T%z | sed 's/\([+-][0-1][0-9]\)\([0-9][0-9]\)$/\1:\2/'
+}
 
 fn read {
     echo -n $* > /dev/tty
@@ -36,7 +37,7 @@ fn transaction {
         while (test -f $tmp) {
             switch (`{read 'Publish,Edit,Delete? '}) {
                 case [Pp]*
-                    mv $tmp $*'/'`{$rfc3339}
+                    mv $tmp $*'/'`{rfc3339}
                 case [Dd]*
                     rm $tmp
                 case [Ee]*
