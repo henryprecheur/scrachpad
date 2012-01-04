@@ -1,0 +1,1 @@
+I'm about to write the html generator for my scratchpad. I'll probably use rc and shell tools, there's no need for something more complicated using Python & Jinja for example.

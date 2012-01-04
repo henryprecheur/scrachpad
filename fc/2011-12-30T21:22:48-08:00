@@ -1,0 +1,3 @@
+Let's talk about the buildin `fc` in [zsh][]. fc allows you to edit the last command in your editor. It might sound kind of pointless, but it makes the command line that much more powerfull. You can have 'real' programs doing something useful in 1 minute right from the shell.
+
+This makes languages like [Awk][] that much more interesting.
