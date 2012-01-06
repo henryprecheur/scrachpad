@@ -31,15 +31,14 @@ fn transaction {
     cat $ref > $tmp
 
     msg=$dir/msg
-    echo 'edit-start: '^`{rfc3339} > $msg
+    echo $* >> $msg
+    echo 'edit-start: '^`{rfc3339} >> $msg
 
     edit $tmp
 
-    fn delete { rm -f $ref $tmp $msg }
-
     # If the file wasn't modified, get out
     if (cmp $ref $tmp >[2=] > /dev/null) {
-        rm -f $ref $tmp
+        delete
     } else {
         while (test -f $tmp) {
             filename=`{hg root}^/^$*^/^`{rfc3339}
@@ -58,7 +57,7 @@ fn transaction {
                     echo Invalid command
             }
         }
-        delete
+        rm -f $ref $tmp $msg
     }
 }
 
