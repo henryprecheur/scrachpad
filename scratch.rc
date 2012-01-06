@@ -8,7 +8,7 @@ if (test $#* -ne 1) {
 }
 
 fn rfc3339 {
-    date +%FT%T%z | sed 's/\([+-][0-1][0-9]\)\([0-9][0-9]\)$/\1:\2/'
+    date +%FT%T%z | sed 's/\([+-][01][0-9]\)\([0-9][0-9]\)$/\1:\2/'
 }
 
 fn read {
@@ -21,23 +21,34 @@ fn edit {
 }
 
 fn transaction {
-    ref=`{mktemp}
+    dir=`{mktemp -d .$*.XXXX}
+
+    ref=$dir/ref
     cat > $ref
 
     # Keep the original to compare later
-    tmp=`{mktemp}
+    tmp=$dir/tmp
     cat $ref > $tmp
+
+    msg=$dir/msg
+    echo 'edit-start: '^`{rfc3339} > $msg
 
     edit $tmp
 
+    fn delete { rm -f $ref $tmp $msg }
+
     # If the file wasn't modified, get out
-    if (cmp $ref $tmp 2>1 > /dev/null) {
+    if (cmp $ref $tmp >[2=] > /dev/null) {
         rm -f $ref $tmp
     } else {
         while (test -f $tmp) {
-            switch (`{read 'Publish,Edit,Delete? '}) {
+            filename=`{hg root}^/^$*^/^`{rfc3339}
+            switch (`{read 'Publish,Keep,Edit,Delete? '}) {
                 case [Pp]*
-                    mv $tmp $*'/'`{rfc3339}
+                    mv $tmp $filename
+                    hg add $filename; hg commit --logfile $msg
+                case [Kk]*
+                    mv $tmp $filename
                 case [Dd]*
                     rm $tmp
                 case [Ee]*
@@ -47,7 +58,7 @@ fn transaction {
                     echo Invalid command
             }
         }
-        rm $ref
+        delete
     }
 }
 
@@ -57,8 +68,7 @@ fn reply {
 
 if (test -f $*) {
     reply < $* | transaction `{dirname $*}
-}
-if (test -d $*) {
+} else if (test -d $*) {
     transaction $* < /dev/null
 } else {
     mkdir $* && transaction $* < /dev/null
