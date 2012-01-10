@@ -1,7 +1,7 @@
 #!/usr/bin/env rc
 # vim:set ts=4 sw=4:
 
-if (test $#* -ne 1) {
+if (~ $#* 1) {
     echo 'Usage:
   '$0' path'
     exit 1
@@ -37,8 +37,8 @@ fn transaction {
     edit $tmp
 
     # If the file wasn't modified, get out
-    if (cmp $ref $tmp >[2=] > /dev/null) {
-        delete
+    if (cmp -s $ref $tmp) {
+        rm $ref $msg $tmp
     } else {
         while (test -f $tmp) {
             filename=`{hg root}^/^$*^/^`{rfc3339}
@@ -49,7 +49,9 @@ fn transaction {
                 case [Kk]*
                     mv $tmp $filename
                 case [Dd]*
-                    rm $tmp
+                    if (~ `{read 'Sure? [yN] '} [yY]) {
+                        rm $tmp
+                    }
                 case [Ee]*
                     echo Editing
                     edit $tmp
@@ -57,7 +59,7 @@ fn transaction {
                     echo Invalid command
             }
         }
-        rm -f $ref $tmp $msg
+        rm $ref $msg
     }
 }
 
