@@ -16,8 +16,13 @@ fn read {
     awk '{print;exit}' < /dev/tty
 }
 
+vim_flags='+set ft=text tw=0'
 fn edit {
-   gvim --nofork '+set ft=text tw=0' $*
+    if (test -n $DISPLAY) {
+        vim $vim_flags < /dev/tty > /dev/tty
+    } else {
+        gvim $vim_flags --nofork '+set ft=text tw=0' $*
+    }
 }
 
 fn transaction {
