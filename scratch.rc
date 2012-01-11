@@ -1,7 +1,7 @@
 #!/usr/bin/env rc
 # vim:set ts=4 sw=4:
 
-if (~ $#* 1) {
+if (! ~ $#* 1) {
     echo 'Usage:
   '$0' path'
     exit 1
@@ -16,8 +16,12 @@ fn read {
     awk '{print;exit}' < /dev/tty
 }
 
-fn edit {
-   gvim --nofork '+set ft=text tw=0' $*
+flags='+set ft=text tw=0' fn edit {
+    if (test -z $DISPLAY) {
+        vim $flags $* < /dev/tty > /dev/tty
+    } else {
+        gvim --nofork $flags $*
+    }
 }
 
 fn transaction {
