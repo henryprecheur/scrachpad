@@ -1,0 +1,43 @@
+#!/usr/bin/env rc
+
+fn reverse { echo $* | sed -E 's#^([^/]+)/(.+)$#\2/\1#' }
+
+fn files {
+  filtered=`{ hg manifest | grep -v scratch.rc | grep $* }
+  { for (file in $filtered) reverse $file } | sort -r
+}
+
+cat <<EOF
+<!DOCTYPE html>
+<title>Scratch pad</title>
+<link rel='stylesheet' href='style.css'>
+<link rel='stylesheet' href='normalize.css'>
+<style>
+    body, header, footer { margin: 2em; }
+</style>
+<header>This is my strachpad, where I learn and make mistakes.</header>
+EOF
+
+for (file in `{files ''}) {
+  file=`{reverse $file}
+  time=`{basename $file}
+  category=`{dirname $file}
+cat <<EOF
+<article id='$file'>
+  <header>
+    <a href='#$file'>$category/<time ='$time'>$time</time></a>
+    <pre>
+EOF
+
+cat $file
+
+cat <<EOF
+</pre>
+</article>
+EOF
+}
+
+cat <<EOF
+<hr>
+</footer><a href='$*'>scratchpad</a></footer>
+EOF
