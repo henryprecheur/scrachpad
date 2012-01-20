@@ -1,12 +1,5 @@
 #!/usr/bin/env rc
 
-fn reverse { echo $* | sed -E 's#^([^/]+)/(.+)$#\2/\1#' }
-
-fn files {
-  filtered=`{ hg manifest | grep -v scratch.rc | grep $* }
-  { for (file in $filtered) reverse $file } | sort -r
-}
-
 cat <<EOF
 <!DOCTYPE html>
 <title>Scratch pad</title>
@@ -14,32 +7,23 @@ cat <<EOF
 <link rel='stylesheet' href='normalize.css'>
 <style>
     body, header, footer { margin: 2em; }
-    article > pre { width: 40em; }
+    article > pre { width: 40em; whitespace: pre-wrap; }
 </style>
 <header>This is my strachpad, where I learn and make mistakes.</header>
 EOF
 
-for (file in `{files ''}) {
-  file=`{reverse $file}
-  time=`{basename $file}
-  category=`{dirname $file}
-cat <<EOF
-<article id='$file'>
-    <a href='#$file'>$category/<time ='$time'>$time</time></a>
-    <pre>
-EOF
-
-# sedding a sed program ...
-tmp=`{mktemp}
-sed 's#FILENAME#$file#' < .format_html.sed > $tmp
-sed -f $tmp < $file
-rm $tmp
+awk '
+BEGIN { RS="\n\n"; }
+{
+        print "<article>\n<pre>"
+        print $0
+        print "</pre>\n</article>"
+}'
 
 cat <<EOF
 </pre>
 </article>
 EOF
-}
 
 cat <<EOF
 <hr>
