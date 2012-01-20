@@ -1,0 +1,14 @@
+fn log {
+  for (i in `{cat}) {
+    file=*/$i
+    echo -n 'time: '
+    basename $file
+    echo -n 'tags: '
+    dirname $file
+    echo
+    cat $file | sed -E -f format_html.sed
+    echo 
+  }
+}
+
+{ for (i in */*) basename $i } | /usr/bin/sort | log
