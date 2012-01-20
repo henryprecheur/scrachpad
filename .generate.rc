@@ -12,12 +12,10 @@ cat <<EOF
 <header>This is my strachpad, where I learn and make mistakes.</header>
 EOF
 
-awk '
+sed -r -f format_html.sed | awk '
 BEGIN { RS="\n\n"; }
 {
-        print "<article>\n<pre>"
-        print $0
-        print "</pre>\n</article>"
+        print "<article>\n<pre>\n" $0 "</pre>\n</article>";
 }'
 
 cat <<EOF
