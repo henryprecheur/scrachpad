@@ -6,7 +6,7 @@ fn log {
     echo -n 'tags: '
     dirname $file
     echo
-    cat $file | sed -E -f format_html.sed
+    cat $file | sed -r 's,^\[[0-9]+\] .*$,.&,'
     echo 
   }
 }
