@@ -11,4 +11,4 @@ fn log {
   }
 }
 
-{ for (i in */*) basename $i } | /usr/bin/sort | log
+{ for (i in */*) basename $i } | sort | log

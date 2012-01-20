@@ -39,4 +39,4 @@ I just wrote a small pipe editor inspired by vipe[1]. It's a short shell:
   cat < $tmp
   rm $tmp
 
-[1]: http://kitenet.net/~joey/code/moreutils/
+.[1] http://kitenet.net/~joey/code/moreutils/
