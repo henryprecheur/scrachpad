@@ -14,6 +14,7 @@ cat <<EOF
 <link rel='stylesheet' href='normalize.css'>
 <style>
     body, header, footer { margin: 2em; }
+    article > pre { width: 40em; }
 </style>
 <header>This is my strachpad, where I learn and make mistakes.</header>
 EOF
@@ -24,12 +25,15 @@ for (file in `{files ''}) {
   category=`{dirname $file}
 cat <<EOF
 <article id='$file'>
-  <header>
     <a href='#$file'>$category/<time ='$time'>$time</time></a>
     <pre>
 EOF
 
-cat $file
+# sedding a sed program ...
+tmp=`{mktemp}
+sed 's#FILENAME#$file#' < .format_html.sed > $tmp
+sed -f $tmp < $file
+rm $tmp
 
 cat <<EOF
 </pre>
