@@ -1,0 +1,5 @@
+I forgot to mention that warning that Merucial gives me:
+
+  warning: filename contains ':', which is reserved on Windows: 'scratchpad/2012-01-19T18:35:19-08:00'
+
+Using RFC 3339 times as filenames was not a good idea.
