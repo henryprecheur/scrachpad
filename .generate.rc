@@ -12,18 +12,22 @@ cat <<EOF
 <header>This is my strachpad, where I learn and make mistakes.</header>
 EOF
 
-sed -r -f format_html.sed | awk '
-BEGIN { RS="\n\n"; }
+fn nextline { awk '{ print; exit }' }
+
+# sed -r -f format_html.sed |
+awk '
+/^[a-zA-Z0-9\-_]+: .*$/ { print "header " $0; next }
 {
+  gsub(/(https?|mailto)[^ ]+/, "<a href=&>&</a>");
+}
+' | awk '
+BEGIN { RS="\n\n"; headers=0 }
+{
+        gsub(/(https?|mailto)[^ ]+/, "<a href=&>&</a>");
         print "<article>\n<pre>\n" $0 "</pre>\n</article>";
 }'
 
 cat <<EOF
-</pre>
-</article>
-EOF
-
-cat <<EOF
 <hr>
-</footer><a href='$*'>scratchpad</a></footer>
+<footer>&copy; 2012 Henry Pr&ecirc;cheur</footer>
 EOF

@@ -1,9 +1,9 @@
-BEGIN { RS="\f\n"; i = 0 }
-{
-        sort[++i] = $0
+BEGIN {
+        RS=""
+        FS="\n\f\n"
 }
 END {
-        for (x = i; x > 0; x--) {
-               print sort[x] "\f";
+        for (i = NF; i > 0; i--) {
+                print $(i) "\n\f"
         }
 }

@@ -1,0 +1,3 @@
+Turns out that using multiple characters for RS is a GNU extension.
+
+So my reverse example doesn't work with other implementations of Awk. I should know better, every time I've used GNU Unix programs I've run into portability problems.
