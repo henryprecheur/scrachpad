@@ -1,9 +1,13 @@
-BEGIN {
-        RS=""
-        FS="\n\f\n"
+BEGIN { i = 0 }
+{
+        while ($0 != "\f") {
+                sort[i] = sort[i] $0 "\n";
+                getline;
+        }
+        i += 1;
 }
 END {
-        for (i = NF; i > 0; i--) {
-                print $(i) "\n\f"
+        for (x = i - 1; x > -1; x--) {
+               print sort[x] "\f";
         }
 }
