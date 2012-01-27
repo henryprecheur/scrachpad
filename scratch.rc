@@ -42,7 +42,7 @@ fn transaction {
 
     # If the file wasn't modified, get out
     if (cmp -s $ref $tmp) {
-        rm $ref $msg $tmp $dir
+        rm $ref $msg $tmp; rmdir $dir
     } else {
         while (test -f $tmp) {
             filename=`{hg root}^/^$*^/^`{rfc3339}
@@ -63,7 +63,7 @@ fn transaction {
                     echo Invalid command
             }
         }
-        rm $ref $msg $dir
+        rm $ref $msg; rmdir $dir
     }
 }
 
