@@ -1,0 +1,5 @@
+From "The Development of the C Language"[1]:
+
+"Thompson's PDP-7 assembler outdid even DEC's in simplicity; it evaluated expressions and emitted the corresponding bits. There were no libraries, no loader or link editor: the entire source of a program was presented to the assembler, and the output file.with a fixed name.that emerged was directly executable. (This name, a.out, explains a bit of Unix etymology; it is the output of the assembler. Even after the system gained a linker and a means of specifying another name explicitly, it was retained as the default executable result of a compilation.)"
+
+.[1] http://cm.bell-labs.com/cm/cs/who/dmr/chist.html
