@@ -2,4 +2,4 @@ I just finished reading "The Development of the C Language"[1] by Dennis Ritchie
 
 I find it remarkable that the early versions of C were developed & used in a very constrained environment. Memory & CPU time were scarce, the language had to be simple to implement. I'm convinced that constraints and limitations fuel creativity, not restrain it. It's easier to find a great solution to a problem when the set of solutions is limited.
 
-.[1] http://cm.bell-labs.com/cm/cs/who/dmr/chist.html"
+.[1] http://cm.bell-labs.com/cm/cs/who/dmr/chist.html
