@@ -62,7 +62,7 @@ if __name__ == '__main__':
 <link rel='stylesheet' href='https://raw.github.com/necolas/normalize.css/master/normalize.css'>
 <style>
     body, header, footer { margin: 2em; }
-    article > pre { width: 40em; white-space: pre-wrap; }
+    article > pre { width: 48em; white-space: pre-wrap; }
 </style>
 <header>This is my strachpad, where I learn and make mistakes.</header>\n''')
 
