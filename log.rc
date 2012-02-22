@@ -1,10 +1,8 @@
 fn log {
   for (i in `{cat}) {
     file=*/$i
-    echo -n 'time: '
-    basename $file
-    echo -n 'tags: '
-    dirname $file
+    echo -n 'time:'; basename $file
+    echo -n 'tags:'; dirname $file
     echo
     cat $file | sed -r 's,^\[[0-9]+\] .*$,.&,'
     echo 
