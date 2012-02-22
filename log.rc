@@ -4,7 +4,7 @@ fn log {
     echo -n 'time:'; basename $file
     echo -n 'tags:'; dirname $file
     echo
-    cat $file | sed -r 's,^\[[0-9]+\] .*$,.&,'
+    cat $file | sed -r 's,^\.(\[[0-9]+\] .*)$,\1,'
     echo 
   }
 }

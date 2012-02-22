@@ -1,0 +1,13 @@
+Quick'n dirty shell script to serve a single file over HTTP:
+
+  #!/bin/sh
+
+  trap 'echo stop; exit' SIGHUP SIGINT SIGTERM
+
+  while true
+  do
+      (echo -e "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r"; cat $*) | \
+          nc -l 8000 > /dev/null
+  done
+
+You'll need netcat (nc) to run it, it will listen on port 8000.

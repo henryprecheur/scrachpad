@@ -1,20 +1,38 @@
+import re
 import sys
+from cgi import escape
 
-class Post(object):
-    def __init__(self):
-        self._header = True
-        self._lines = list()
+regexes = (
+    (re.compile(r'((?:https?://|mailto:)[^ \r\n]+)'),
+     r"<a href='\1'>\1</a>"),
+    (re.compile(r'^\[([0-9]+)\] (.*)$'),
+     r"<span id='{}.\1'>\1</span> \2"),
+    (re.compile(r'\[([0-9]+)\]'),
+     r"<sup><a href='#{}.\1'>\1</a></sup>"),
+    (re.compile(r'\[\[([0-9]+)\]\]'), r'[\1]')
+)
 
-    def feed(self, line):
-        if not line or line == '\f\n':
-            self._lines.append('</pre>\n')
-            return False
+def format(line, ref):
+    assert ref
 
-        # Poor's man state management
-        if self._header:
+    line = escape(line)
+    for r, s in regexes:
+        line = r.sub(s.format(ref), line)
+    return line
+
+def articles(input):
+    post = list()
+    header = True
+    ref = None
+
+    for line in input:
+        if not line: # EOF
+            yield
+
+        if header:
             if line == '\n':
-                self._header = False
-                self._lines.append('\n<pre>')
+                header = False
+                post.append('\n<pre>')
             else:
                 if ':' not in line:
                     raise ValueError("Not a valid header: {!r}".format(line))
@@ -23,27 +41,36 @@ class Post(object):
                 value = value.rstrip('\n')
 
                 if name == 'time':
-                    self._lines.append(
-                        "<time datetime='{}' pubdate>{}</time>\n".\
-                        format(value, value))
+                    ref = value
+                    post.append("<time datetime='{}' pubdate>{}</time>\n".format(value, value))
                 elif name == 'tags':
-                    self._lines.append('<p>{}</p>\n'.format(value))
+                    post.append('<span>{}</span>\n'.format(value))
         else:
-            self._lines.append(line)
-
-        return True
+            if line == '\f\n':
+                post.append('</pre>\n')
+                yield post
+                post = list()
+                header = True
+                ref = None
+            else:
+                # FIXME format
+                post.append(format(line, ref))
 
 if __name__ == '__main__':
-    posts = list()
-    post = Post()
+    sys.stdout.write('''<!DOCTYPE html>
+<title>Scratch pad</title>
+<link rel='stylesheet' href='https://raw.github.com/necolas/normalize.css/master/normalize.css'>
+<style>
+    body, header, footer { margin: 2em; }
+    article > pre { width: 40em; white-space: pre-wrap; }
+</style>
+<header>This is my strachpad, where I learn and make mistakes.</header>\n''')
 
-    for line in sys.stdin:
-        if not post.feed(line):
-            posts.append(post)
-            post = Post()
-
-    print len(posts)
-
-    for p in reversed(posts):
-        for l in p._lines:
+    for p in reversed(list(articles(sys.stdin))):
+        sys.stdout.write('<article>\n')
+        for l in p:
             sys.stdout.write(l)
+        sys.stdout.write('</article>\n')
+
+    sys.stdout.write('''\n<hr>
+<footer>&copy; 2012 Henry Pr&ecirc;cheur</footer>''')
