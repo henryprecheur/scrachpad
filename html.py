@@ -6,7 +6,7 @@ regexes = (
     (re.compile(r'((?:https?://|mailto:)[^ \r\n]+)'),
      r"<a href='\1'>\1</a>"),
     (re.compile(r'^\[([0-9]+)\] (.*)$'),
-     r"<span id='{}.\1'>\1</span> \2"),
+     r"<span id='{}.\1'>\1 &mdash; \2</span>"),
     (re.compile(r'\[([0-9]+)\]'),
      r"<sup><a href='#{}.\1'>\1</a></sup>"),
     (re.compile(r'\[\[([0-9]+)\]\]'), r'[\1]')
@@ -61,7 +61,8 @@ if __name__ == '__main__':
 <title>Scratch pad</title>
 <link rel='stylesheet' href='https://raw.github.com/necolas/normalize.css/master/normalize.css'>
 <style>
-    body, header, footer { margin: 2em; }
+    html { font-family: sans-serif; }
+    body, header, footer, article { margin: 2em; }
     article > pre { width: 48em; white-space: pre-wrap; }
 </style>
 <header>This is my strachpad, where I learn and make mistakes.</header>\n''')
@@ -73,4 +74,6 @@ if __name__ == '__main__':
         sys.stdout.write('</article>\n')
 
     sys.stdout.write('''\n<hr>
-<footer>&copy; 2012 Henry Pr&ecirc;cheur</footer>''')
+<footer>&copy; 2012 \
+<a href='mailto:Henry Precheur <henry@precheur.org>'>Henry \
+Pr&ecirc;cheur</a></footer>''')
