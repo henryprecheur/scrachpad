@@ -1,11 +1,7 @@
 #!/usr/bin/env rc
 # vim:set ts=4 sw=4:
 
-if (! ~ $#* 1) {
-    echo 'Usage:
-  '$0' path'
-    exit 1
-}
+remote_script='rc -e /var/www/henry.precheur.org/scratchpad/publish.rc'
 
 fn rfc3339 {
     date +%FT%T%z | sed 's/\([+-][01][0-9]\)\([0-9][0-9]\)$/\1:\2/'
@@ -25,56 +21,39 @@ flags='+set ft=text tw=0' fn edit {
 }
 
 fn transaction {
-    dir=`{mktemp -d .$*.XXXX}
-
-    ref=$dir/ref
-    cat > $ref
-
-    # Keep the original to compare later
-    tmp=$dir/tmp
-    cat $ref > $tmp
-
-    msg=$dir/msg
-    echo $* >> $msg
-    echo 'edit-start: '^`{rfc3339} >> $msg
+    if (test -z $*) {
+        tmp=`{mktemp}
+    } else {
+        tmp=$*
+    }
 
     edit $tmp
 
-    # If the file wasn't modified, get out
-    if (cmp -s $ref $tmp) {
-        rm $ref $msg $tmp; rmdir $dir
-    } else {
-        while (test -f $tmp) {
-            filename=`{hg root}^/^$*^/^`{rfc3339}
-            switch (`{read 'Publish,Keep,Edit,Delete? '}) {
-                case [Pp]*
-                    mv $tmp $filename
-                    hg add $filename; hg commit --logfile $msg
-                case [Kk]*
-                    mv $tmp $filename
-                case [Dd]*
-                    if (~ `{read 'Sure? [yN] '} [yY]) {
-                        rm $tmp
-                    }
-                case [Ee]*
-                    echo Editing
-                    edit $tmp
-                case *
-                    echo Invalid command
-            }
+    while (test -f $tmp) {
+        switch (`{read 'Publish,Keep,Edit,Delete? '}) {
+            case [Pp]*
+                {
+                    rfc3339
+                    echo
+                    cat $tmp
+                    echo 
+                } | ssh henry@alena.koalabs.org $remote_script &&
+                rm $tmp
+            case [Kk]*
+                save=$HOME/.scratch.`{rfc3339}
+                mv $tmp $save
+                echo $save
+            case [Dd]*
+                if (~ `{read 'Sure? [yN] '} [yY]) {
+                    rm $tmp
+                }
+            case [Ee]*
+                echo Editing
+                edit $tmp
+            case *
+                echo Invalid command
         }
-        rm $ref $msg; rmdir $dir
     }
 }
 
-fn reply {
-    awk '{ if (length($0) == 0) { print ">" } else { print "> "$0 } }'
-}
-
-if (test -f $*) {
-    reply < $* | transaction `{dirname $*}
-} else if (test -d $*) {
-    transaction $* < /dev/null
-} else {
-    mkdir $* && transaction $* < /dev/null
-}
+transaction $*
