@@ -20,41 +20,28 @@ def format(line, ref):
         line = r.sub(s.format(ref), line)
     return line
 
-def articles(input):
-    post = list()
-    header = True
-    ref = None
+def post(input):
+    id_ = input.next().rstrip('\n')
 
-    for line in input:
-        if not line: # EOF
-            yield
+    if input.next() != '\n':
+        raise ValueError('Bad ID separator')
 
-        if header:
-            if line == '\n':
-                header = False
-                post.append('\n<pre>')
-            else:
-                if ':' not in line:
-                    raise ValueError("Not a valid header: {!r}".format(line))
+    body = list()
+    while True:
+        line = input.next()
 
-                name, value = line.split(':', 1)
-                value = value.rstrip('\n')
-
-                if name == 'time':
-                    ref = value
-                    post.append("<time datetime='{}' pubdate>{}</time>\n".format(value, value))
-                elif name == 'tags':
-                    post.append('<span>{}</span>\n'.format(value))
+        if line == '\f\n':
+            return (id_, body)
         else:
-            if line == '\f\n':
-                post.append('</pre>\n')
-                yield post
-                post = list()
-                header = True
-                ref = None
-            else:
-                # FIXME format
-                post.append(format(line, ref))
+            body.append(line)
+
+def posts(input):
+    p = list()
+    try:
+        while True:
+            p.append(post(input))
+    except StopIteration:
+        return p
 
 if __name__ == '__main__':
     sys.stdout.write('''<!DOCTYPE html>
@@ -67,11 +54,12 @@ if __name__ == '__main__':
 </style>
 <header>This is my strachpad, where I learn and make mistakes.</header>\n''')
 
-    for p in reversed(list(articles(sys.stdin))):
-        sys.stdout.write('<article>\n')
-        for l in p:
-            sys.stdout.write(l)
-        sys.stdout.write('</article>\n')
+    for id_, body in reversed(posts(sys.stdin)):
+        sys.stdout.write('<article>\n<time datetime={} pubdate>{}</time>\n'
+                         '<pre>'.format(id_, id_))
+        for l in body:
+            sys.stdout.write(format(l, id_))
+        sys.stdout.write('</pre>\n</article>\n')
 
     sys.stdout.write('''\n<hr>
 <footer>&copy; 2012 \
