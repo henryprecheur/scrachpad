@@ -6,9 +6,9 @@ regexes = (
     (re.compile(r'((?:https?://|mailto:)[^ \r\n]+)'),
      r"<a href='\1'>\1</a>"),
     (re.compile(r'^\[([0-9]+)\] (.*)$'),
-     r"<span id='{}.\1'>\1 &mdash; \2</span>"),
+     r"<span id='%s.\1'>\1 &mdash; \2</span>"),
     (re.compile(r'\[([0-9]+)\]'),
-     r"<sup><a href='#{}.\1'>\1</a></sup>"),
+     r"<sup><a href='#%s.\1'>\1</a></sup>"),
     (re.compile(r'\[\[([0-9]+)\]\]'), r'[\1]')
 )
 
@@ -17,7 +17,11 @@ def format(line, ref):
 
     line = escape(line)
     for r, s in regexes:
-        line = r.sub(s.format(ref), line)
+        try:
+            s = s % ref
+        except TypeError:
+            pass
+        line = r.sub(s, line)
     return line
 
 def post(input):
@@ -55,8 +59,8 @@ if __name__ == '__main__':
 <header>This is my strachpad, where I learn and make mistakes.</header>\n''')
 
     for id_, body in reversed(posts(sys.stdin)):
-        sys.stdout.write('<article>\n<time datetime={} pubdate>{}</time>\n'
-                         '<pre>'.format(id_, id_))
+        sys.stdout.write('<article>\n<time datetime=%s pubdate>%s</time>\n'
+                         '<pre>' % (id_, id_))
         for l in body:
             sys.stdout.write(format(l, id_))
         sys.stdout.write('</pre>\n</article>\n')
