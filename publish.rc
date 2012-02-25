@@ -1,9 +1,7 @@
 #!/usr/bin/env rc
 # vim:set ft=text ts=4 sw=4:
 
-co -l -f log
 cat > log
-ci log
+hg commit -m `{date} log
 
-co log
 python html.py < log > index.html
