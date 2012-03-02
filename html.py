@@ -4,7 +4,6 @@ import common
 if __name__ == '__main__':
     sys.stdout.write('''<!DOCTYPE html>
 <title>Scratch pad</title>
-<link rel='stylesheet' href='https://raw.github.com/necolas/normalize.css/master/normalize.css'>
 <style>
     html { font: normal medium sans-serif; }
     body, header, footer, article { margin: 2em; }
@@ -23,6 +22,6 @@ if __name__ == '__main__':
         sys.stdout.write('</pre>\n</article>\n')
 
     sys.stdout.write('''\n<hr>
-<footer>&copy; 2012 \
+<footer>Contact me:
 <a href='mailto:Henry Precheur <henry@precheur.org>'>Henry \
 Pr&ecirc;cheur</a></footer>''')
