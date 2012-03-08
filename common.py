@@ -14,6 +14,7 @@ regexes = (
 def format(line, ref):
     assert ref
 
+    line = line.rstrip('\n')
     line = escape(line)
     for r, s in regexes:
         try:
@@ -21,7 +22,7 @@ def format(line, ref):
         except TypeError:
             pass
         line = r.sub(s, line)
-    return line
+    return line + '<br>\n'
 
 def post(input):
     id_ = input.next().rstrip('\n')

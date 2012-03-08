@@ -6,8 +6,9 @@ if __name__ == '__main__':
 <title>Scratch pad</title>
 <style>
     html { font: normal medium sans-serif; }
-    body, header, footer, article { margin: 2em; }
-    article > pre { width: 48em; white-space: pre-wrap; }
+    body { margin: 0 0 0 10%; }
+    header, footer, article { margin: 1em; }
+    article > p { font: normal 1em monospace; width: 48em }
 </style>
 <header>This is my strachpad, where I learn and make mistakes.</header>\n''')
 
@@ -16,10 +17,10 @@ if __name__ == '__main__':
                          '<a href=#%s>'
                          '<time datetime=%s pubdate>%s</time>'
                          '</a>\n'
-                         '<pre>' % (id_, id_, id_, id_))
+                         '<p><code>' % (id_, id_, id_, id_))
         for l in body:
             sys.stdout.write(common.format(l, id_))
-        sys.stdout.write('</pre>\n</article>\n')
+        sys.stdout.write('</code></p>\n</article>\n')
 
     sys.stdout.write('''\n<hr>
 <footer>Contact me:
