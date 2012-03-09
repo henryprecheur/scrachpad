@@ -3,6 +3,10 @@
 
 remote_script='rc -e /var/www/henry.precheur.org/scratchpad/publish.rc'
 
+fn rfc3339 {
+    date +%FT%T%z | sed 's/\([+-][01][0-9]\)\([0-9][0-9]\)$/\1:\2/'
+}
+
 fn read {
     echo -n $* > /dev/tty
     awk '{print;exit}' < /dev/tty
@@ -28,7 +32,11 @@ fn transaction {
     while (test -f $tmp) {
         switch (`{read 'Publish,Keep,Edit,Delete? '}) {
             case [Pp]*
-                ssh henry@alena.koalabs.org $remote_script < $tmp &&
+                {
+                    rfc3339
+                    echo
+                    cat $tmp
+                } | ssh henry@alena.koalabs.org $remote_script &&
                 rm $tmp
             case [Kk]*
                 save=$HOME/.scratch.`{rfc3339}

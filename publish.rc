@@ -3,19 +3,10 @@
 
 cd /var/www/henry.precheur.org/scratchpad/
 
-fn rfc3339 {
-    date +%FT%T%z | sed 's/\([+-][01][0-9]\)\([0-9][0-9]\)$/\1:\2/'
-}
-
 dir=.log
-mkdir $dir
+test -d $dir || mkdir $dir
 
-{
-    rfc3339
-    echo
-    cat
-    echo 
-} | tee -a log $dir/`{rfc3339}
+{ cat; echo  } | tee -a log $dir/`{rfc3339}
 
 python html.py < log > index.html
 python atom.py < log > feed.atom
