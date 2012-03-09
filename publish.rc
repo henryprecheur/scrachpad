@@ -6,7 +6,8 @@ cd /var/www/henry.precheur.org/scratchpad/
 dir=.log
 test -d $dir || mkdir $dir
 
-{ cat; echo  } | tee -a log $dir/`{rfc3339}
+tmp=`{date +%FT%T%z | sed 's/\([+-][01][0-9]\)\([0-9][0-9]\)$/\1:\2/'}
+{ cat; echo  } | tee -a log $dir/$tmp
 
 python html.py < log > index.html
 python atom.py < log > feed.atom
