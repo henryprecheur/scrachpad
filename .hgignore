@@ -1,0 +1,5 @@
+\.log/.*
+index.html
+feed.atom
+log
+.*\.pyc
