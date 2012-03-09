@@ -16,21 +16,22 @@ if __name__ == '__main__':
 <id>${url}</id>
 <title>Scratchpad</title>
 <updated>${time}</updated>
-<link rel="self" href="$url/atom.xml" />
+<link rel="self" href="$url/feed.atom" />
 <link rel="self" href="$url/" />\n
 ''').safe_substitute(url=url, time=updated))
 
     for id_, body in posts:
         sys.stdout.write(Template('''\
 <entry>
-    <id>${url}/#${ref}</id>
-    <link href='${url}/#${ref}' />
-    <title>${ref}</title>
-    <updated>${ref}</updated>
-    <content type="xhtml">
-       <pre>''').safe_substitute(url=url, ref=id_))
+  <id>${url}/#${ref}</id>
+  <link href='${url}/#${ref}' />
+  <title>${ref}</title>
+  <updated>${ref}</updated>
+  <content type="xhtml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><pre>''').\
+                         safe_substitute(url=url, ref=id_))
         for l in body:
             sys.stdout.write(common.format(l, id_))
-        sys.stdout.write('</pre>\n    </content>\n</entry>\n')
+        sys.stdout.write('    </pre></div>\n  </content>\n</entry>\n')
 
     sys.stdout.write('</feed>')
