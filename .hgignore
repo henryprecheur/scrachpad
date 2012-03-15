@@ -1,4 +1,5 @@
 \.log/.*
+.env/*
 index.html
 feed.atom
 log
