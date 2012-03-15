@@ -12,7 +12,7 @@ fn read {
     awk '{print;exit}' < /dev/tty
 }
 
-flags='+set ft=text tw=0' fn edit {
+flags='+set ft=markdown spell' fn edit {
     if (test -z $DISPLAY) {
         vim $flags $* < /dev/tty > /dev/tty
     } else {
