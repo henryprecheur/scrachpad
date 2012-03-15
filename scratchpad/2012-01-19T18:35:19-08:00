@@ -1,3 +1,0 @@
-I think I'm going to change the architecture of my scratch pad. Instead of a collection of files in mercurial, I'll use a simple log file. It'll give me version control for 'free', but I'll lose the completion from the shell. On the other end I wont use Mercurial, that's one less tool to worry about.
-
-Not sure if that'll work. I'll write a prototype and see how it goes.

@@ -1,9 +1,0 @@
-I've just recorded my first test screencast. I'll need some more pratice before posting on Youtube...
-
-Here's the command I use under OpenBSD to record:
-
-ffmpeg -f sndio -i rsnd/0 \
-    -f x11grab -r 10 -s 1284x772 -i :0.0+1,16 \
-    -acodec pcm_s16le \
-    -vcodec libx264 -vpre lossless_ultrafast -threads 0 \
-    -y "./$(date +%FT%T).mkv"

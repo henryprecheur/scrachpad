@@ -1,5 +1,0 @@
-I've read the Rust's tutorial last night.
-
-So far I'm pleased by its design choice. I like that everything is constant by default. If you want to modify something, you have to declare it mutable since the beginning.
-
-The thing I'm not a big fan of are vectors. Vectors are Rust's version of arrays, they are 'uniquely' allocated in the heap. I like to have arrays on the stack in C, I'm not sure it's OK to have 'everything' on the heap in practice.

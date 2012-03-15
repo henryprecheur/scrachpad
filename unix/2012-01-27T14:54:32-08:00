@@ -1,3 +1,0 @@
-/usr/bin shouldn't exist, /usr was what /home used to be, and today's Unix hierarchy doesn't make sense:
-
-  http://lists.busybox.net/pipermail/busybox/2010-December/074114.html

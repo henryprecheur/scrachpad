@@ -1,3 +1,0 @@
-I'm writing the HTML & Atom generation scripts in Python. I tried to use Awk, but it was kind of inconvenient. Lua seemed to be promising, but the lacks idioms I got used to with Python made it a bit frustrating.
-
-I wanted to finish a first version of Scratchpad before the end of January, it's late-February now: I better get on it with what I know. So Python it is.

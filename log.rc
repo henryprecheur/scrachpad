@@ -1,11 +1,0 @@
-fn log {
-  for (i in `{cat}) {
-    file=*/$i
-    basename $file
-    echo
-    cat $file | sed -r 's,^\.(\[[0-9]+\] .*)$,\1,'
-    echo 
-  }
-}
-
-{ for (i in */*) basename $i } | sort | log
