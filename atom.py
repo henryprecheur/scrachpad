@@ -1,6 +1,8 @@
 import sys
 from string import Template
 
+from markdown2 import markdown
+
 import common
 
 url = 'http://henry.precheur.org/scratchpad'
@@ -28,10 +30,8 @@ if __name__ == '__main__':
   <title>${ref}</title>
   <updated>${ref}</updated>
   <content type="xhtml">
-    <div xmlns="http://www.w3.org/1999/xhtml"><pre>''').\
+    <div xmlns="http://www.w3.org/1999/xhtml">\n''').\
                          safe_substitute(url=url, ref=id_))
-        for l in body:
-            sys.stdout.write(common.format(l, id_))
-        sys.stdout.write('    </pre></div>\n  </content>\n</entry>\n')
-
-    sys.stdout.write('</feed>')
+        sys.stdout.write(markdown(body.getvalue()))
+        sys.stdout.write('    </div>\n  </content>\n</entry>\n')
+sys.stdout.write('</feed>')

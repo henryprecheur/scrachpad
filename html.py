@@ -1,6 +1,8 @@
 import sys
 import common
 
+from markdown2 import markdown
+
 if __name__ == '__main__':
     sys.stdout.write('''<!DOCTYPE html>
 <title>Scratch pad</title>
@@ -8,7 +10,7 @@ if __name__ == '__main__':
     html { font: normal medium sans-serif; }
     body { margin: 0 0 0 10%; }
     header, footer, article { margin: 1em; }
-    article > p { font: normal 1em monospace; width: 48em }
+    article { width: 40em }
 </style>
 <header>This is my strachpad, where I learn and make mistakes.</header>\n''')
 
@@ -16,11 +18,9 @@ if __name__ == '__main__':
         sys.stdout.write('<article id=%s>\n'
                          '<a href=#%s>'
                          '<time datetime=%s pubdate>%s</time>'
-                         '</a>\n'
-                         '<p><code>' % (id_, id_, id_, id_))
-        for l in body:
-            sys.stdout.write(common.format(l, id_))
-        sys.stdout.write('</code></p>\n</article>\n')
+                         '</a>\n' % (id_, id_, id_, id_))
+        sys.stdout.write(markdown(body.getvalue()))
+        sys.stdout.write('</article>\n')
 
     sys.stdout.write('''\n<hr>
 <footer>Contact me:
