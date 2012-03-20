@@ -8,7 +8,7 @@ if __name__ == '__main__':
 <title>Scratch pad</title>
 <style>
     html { font: normal medium sans-serif; }
-    body { margin: 0 0 0 10%; }
+    body { margin-left: 10%; }
     header, footer, article { margin: 1em; }
     article { width: 40em }
 </style>
