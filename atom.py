@@ -32,6 +32,6 @@ if __name__ == '__main__':
   <content type="xhtml">
     <div xmlns="http://www.w3.org/1999/xhtml">\n''').\
                          safe_substitute(url=url, ref=id_))
-        sys.stdout.write(markdown(body.getvalue()))
+        sys.stdout.write(markdown(body))
         sys.stdout.write('    </div>\n  </content>\n</entry>\n')
 sys.stdout.write('</feed>')

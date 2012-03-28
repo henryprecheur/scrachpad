@@ -19,7 +19,7 @@ if __name__ == '__main__':
                          '<a href=#%s>'
                          '<time datetime=%s pubdate>%s</time>'
                          '</a>\n' % (id_, id_, id_, id_))
-        sys.stdout.write(markdown(body.getvalue()))
+        sys.stdout.write(markdown(body))
         sys.stdout.write('</article>\n')
 
     sys.stdout.write('''\n<hr>

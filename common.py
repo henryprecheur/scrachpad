@@ -11,7 +11,7 @@ def post(input):
         line = input.next()
 
         if line == '\f\n':
-            return (id_, body)
+            return (id_, body.getvalue())
         else:
             body.write(line)
 
