@@ -30,11 +30,11 @@ function publish {
 }
 
 function transaction {
-    if test -z "$*"
+    typeset tmp=$(mktemp)
+
+    if test -n "$*"
     then
-        typeset tmp=$(mktemp)
-    else
-        typeset tmp="$*"
+        cat "$*" > $tmp
     fi
 
     edit "$tmp"
