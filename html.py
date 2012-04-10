@@ -9,8 +9,9 @@ if __name__ == '__main__':
 <style>
     html { font: normal medium sans-serif; }
     body { margin-left: 10%; }
-    header, footer, article { margin: 1em; }
-    article { width: 40em }
+    header, footer, article { margin: 1em; padding: 1em; }
+    article { width: 40em; border-top: thin solid; }
+    article time { font-size: small; }
 </style>
 <header>This is my strachpad, where I learn and make mistakes.</header>\n''')
 
