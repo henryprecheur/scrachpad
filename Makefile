@@ -3,10 +3,10 @@ PYTHON=python
 all: index.html feed.atom
 
 index.html: log
-	$(PYTHON) html.py < $^ > $@
+	$(PYTHON) html.py < $? > $@
 
 feed.atom: log
-	$(PYTHON) atom.py < $^ > $@
+	$(PYTHON) atom.py < $? > $@
 
 log:
 	curl -s http://henry.precheur.org/scratchpad/log > log
