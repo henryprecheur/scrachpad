@@ -12,7 +12,7 @@ function read {
 }
 
 function edit {
-    typeset flags='+set ft=markdown spell'
+    typeset -r flags='+set ft=markdown spell'
     if test -z "$DISPLAY"
     then
         vim "$flags" "$*" < /dev/tty > /dev/tty
@@ -30,7 +30,7 @@ function publish {
 }
 
 function transaction {
-    typeset tmp=$(mktemp)
+    typeset -r tmp=$(mktemp)
 
     if test -n "$*"
     then
