@@ -11,5 +11,10 @@ feed.atom: log
 log:
 	curl -s http://henry.precheur.org/scratchpad/log > log
 
+relog:
+	curl -s http://henry.precheur.org/scratchpad/log > log
+
 clean:
 	rm -f index.html feed.atom
+
+.PHONY: clean relog all
