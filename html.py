@@ -12,6 +12,7 @@ if __name__ == '__main__':
     header, footer, article { margin: 1em; padding: 1em; }
     article { width: 40em; border-top: thin solid; }
     article time { font-size: small; }
+    article pre { margin-left: 1em; }
 </style>
 <header>This is my strachpad, where I learn and make mistakes.</header>\n''')
 
