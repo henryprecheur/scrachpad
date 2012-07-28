@@ -5,6 +5,9 @@ from markdown2 import markdown
 
 if __name__ == '__main__':
     sys.stdout.write('''<!DOCTYPE html>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width">
 <title>Scratch pad</title>
 <style>
     html { font: normal medium sans-serif; }
@@ -21,7 +24,9 @@ if __name__ == '__main__':
                          '<a href=#%s>'
                          '<time datetime=%s pubdate>%s</time>'
                          '</a>\n' % (id_, id_, id_, id_))
-        sys.stdout.write(markdown(body))
+        x = markdown(body)
+        x = x.encode('utf8', errors='xmlcharrefreplace')
+        sys.stdout.write(x)
         sys.stdout.write('</article>\n')
 
     sys.stdout.write('''\n<hr>
