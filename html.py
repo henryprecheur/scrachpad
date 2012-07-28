@@ -11,7 +11,6 @@ if __name__ == '__main__':
 <title>Scratch pad</title>
 <style>
     html { font: normal medium sans-serif; }
-    body { margin-left: 10%; }
     header, footer, article { margin: 1em; padding: 1em; }
     article { width: 40em; border-top: thin solid; }
     article time { font-size: small; }
