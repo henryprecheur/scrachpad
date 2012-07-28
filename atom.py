@@ -34,6 +34,6 @@ if __name__ == '__main__':
     <div xmlns="http://www.w3.org/1999/xhtml">\n''').\
                          safe_substitute(url=url, ref=id_))
         x = xmlize(markdown(body))
-        sys.stdout.write(x.encode('utf8', errors='xmlcharrefreplace'))
+        sys.stdout.write(x.encode('utf8', 'xmlcharrefreplace'))
         sys.stdout.write('    </div>\n  </content>\n</entry>\n')
 sys.stdout.write('</feed>')

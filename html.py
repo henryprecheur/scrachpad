@@ -25,7 +25,7 @@ if __name__ == '__main__':
                          '<time datetime=%s pubdate>%s</time>'
                          '</a>\n' % (id_, id_, id_, id_))
         x = markdown(body)
-        x = x.encode('utf8', errors='xmlcharrefreplace')
+        x = x.encode('utf8', 'xmlcharrefreplace')
         sys.stdout.write(x)
         sys.stdout.write('</article>\n')
 
