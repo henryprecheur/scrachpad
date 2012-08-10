@@ -5,17 +5,15 @@ from markdown2 import markdown
 
 if __name__ == '__main__':
     sys.stdout.write('''<!DOCTYPE html>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width">
-<title>Scratch pad</title>
-<style>
-    html { font: normal medium sans-serif; }
-    header, footer, article { margin: 1em; padding: 1em; }
-    article { width: 40em; border-top: thin solid; }
-    article time { font-size: small; }
-    article pre { margin-left: 1em; }
-</style>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>Scratch pad</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 <header>This is my strachpad, where I learn and make mistakes.</header>\n''')
 
     for id_, body in reversed(common.posts(sys.stdin)):
@@ -45,4 +43,7 @@ Pr&ecirc;cheur</a></footer>
     var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
   })();
 
-</script>''')
+</script>
+</body>
+</html>
+''')
