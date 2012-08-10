@@ -12,7 +12,7 @@ function read {
 }
 
 function edit {
-    typeset -r flags='+set ft=markdown spell'
+    readonly flags='+set ft=markdown spell'
     if test -z "$DISPLAY"
     then
         vim "$flags" "$*" < /dev/tty > /dev/tty
@@ -30,7 +30,7 @@ function publish {
 }
 
 function transaction {
-    typeset -r tmp=$(mktemp)
+    readonly tmp=$(mktemp)
 
     if test -n "$*"
     then
@@ -46,7 +46,7 @@ function transaction {
                 publish "$tmp" && rm "$tmp"
                 ;;
             [Kk]*)
-                typeset save="$HOME/.scratch.$(rfc3339)"
+                readonly save="$HOME/.scratch.$(rfc3339)"
                 mv "$tmp" "$save"
                 echo "$save"
                 ;;
