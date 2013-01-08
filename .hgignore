@@ -3,4 +3,5 @@
 index.html
 feed.atom
 log
+normalize.css
 .*\.pyc

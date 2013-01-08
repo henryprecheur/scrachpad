@@ -1,0 +1,26 @@
+/* Extra style */
+html {
+    font: normal medium sans-serif;
+    background-color: #ddd;
+    color: #444;
+}
+
+a, a:active, a:visited, code.url, h1,h2,h3,h4,h5,h6 {
+    color: #666;
+    text-decoration: none;
+    border-bottom: 1px dotted;
+}
+
+a:hover {
+    border-bottom: 1px solid;
+}
+
+header, footer, article { margin: 1em; padding: 1em; }
+article {
+    width: 40em;
+    border-top: thin solid;
+    line-height: 140%;
+}
+
+article time { font-size: small; }
+article pre { margin-left: 1em; }
