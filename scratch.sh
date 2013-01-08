@@ -15,9 +15,9 @@ function edit {
     readonly flags='+set ft=markdown spell'
     if test -z "$DISPLAY"
     then
-        vim "$flags" "$*" < /dev/tty > /dev/tty
+        vim "$flags" $@ < /dev/tty > /dev/tty
     else
-        gvim --nofork "$flags" "$*"
+        gvim --nofork "$flags" $@
     fi
 }
 
@@ -25,7 +25,7 @@ function publish {
     {
         rfc3339
         echo
-        cat "$*"
+        cat $@
     } | ssh henry@alena.koalabs.org "$remote_script"
 }
 
@@ -61,4 +61,4 @@ function transaction {
     done
 }
 
-transaction "$*"
+transaction $@
