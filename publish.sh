@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# cd /var/www/henry.precheur.org/scratchpad/
+cd /var/www/henry.precheur.org/scratchpad/
 
 readonly dir=.log
 test -d $dir || mkdir $dir
