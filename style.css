@@ -518,4 +518,4 @@ article {
 }
 
 article time { font-size: small; }
-article pre { margin-left: 1em; }
+article pre { margin-left: 1em; width: 50em; }
