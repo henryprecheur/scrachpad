@@ -1,6 +1,7 @@
 #!/bin/sh
 
 remote_script='rc -e /var/www/henry.precheur.org/scratchpad/publish.rc'
+remote_script='sh -e /var/www/henry.precheur.org/scratchpad/publish.sh'
 
 function rfc3339 {
     date +%FT%T%z | sed 's/\([+-][01][0-9]\)\([0-9][0-9]\)$/\1:\2/'
