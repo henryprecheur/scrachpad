@@ -11,15 +11,22 @@ if __name__ == '__main__':
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width">
     <title>Scratch pad</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap.min.css'>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' href='//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/2.3.2/css/bootstrap-responsive.min.css'>
+    <style>
+        body { margin: 0 auto; max-width: 50em }
+        blockquote p { font-size: inherit }
+        article > time { display: block; margin-bottom: 1.5em }
+    </style>
 </head>
 <body>
 <header>This is my strachpad, where I learn and make mistakes.</header>\n''')
 
     for id_, body in reversed(common.posts(sys.stdin)):
-        sys.stdout.write('<article id=%s>\n'
-                         '<a href=#%s>'
-                         '<time datetime=%s pubdate>%s</time>'
+        sys.stdout.write('<hr>\n'
+                         '<article id=%s>\n'
+                         "<time datetime=%s pubdate><a href='#%s'>%s</a></time>"
                          '</a>\n' % (id_, id_, id_, id_))
         x = markdown(body)
         x = x.encode('utf8', 'xmlcharrefreplace')
