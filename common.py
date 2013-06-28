@@ -1,24 +1,21 @@
 import io
 
-def post(input):
-    id_ = input.next().rstrip('\n')
+def posts_iter(input):
+    for line in input:
+        id_ = line.rstrip('\n')
 
-    if input.next() != '\n':
-        raise ValueError('Bad ID separator')
+        if input.next() != '\n':
+            raise ValueError('Bad ID separator')
 
-    body = io.BytesIO()
-    while True:
-        line = input.next()
+        body = io.BytesIO()
+        while True:
+            line = input.next()
 
-        if line == '\f\n':
-            return (id_, body.getvalue())
-        else:
-            body.write(line)
+            if line == '\f\n':
+                yield (id_, body.getvalue())
+                break
+            else:
+                body.write(line)
 
 def posts(input):
-    p = list()
-    try:
-        while True:
-            p.append(post(input))
-    except StopIteration:
-        return p
+    return list(posts_iter(input))
