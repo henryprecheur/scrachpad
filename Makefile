@@ -1,18 +1,17 @@
-PYTHON=.env/bin/python
+PYTHON=python
+VIRTUALENV_URL='https://raw.github.com/pypa/virtualenv/master/virtualenv.py'
 
 all: index.html style.css feed.atom
 
 index.html: log html.py
-	$(PYTHON) html.py < log > $@
+	.env/bin/python html.py < log > $@
 
 feed.atom: log atom.py
-	$(PYTHON) atom.py < log > $@
+	.env/bin/python atom.py < log > $@
 
-style.css: normalize.css extra.css
-	cat normalize.css extra.css > style.css
-
-normalize.css:
-	curl -s https://raw.github.com/necolas/normalize.css/master/normalize.css > $@
+bootstrap:
+	curl -s $(VIRTUALENV_URL) | $(PYTHON) - .env
+	.env/bin/pip install --upgrade html5lib markdown2
 
 log:
 	curl -s http://henry.precheur.org/scratchpad/log > log
