@@ -30,6 +30,10 @@ if __name__ == '__main__':
   <link href='${url}/#${ref}' />
   <title>${ref}</title>
   <updated>${ref}</updated>
+  <author>
+    <name>Henry Pr&#234;cheur</name>
+    <email>henry@precheur.org</email>
+  </author>
   <content type="xhtml">
     <div xmlns="http://www.w3.org/1999/xhtml">\n''').\
                          safe_substitute(url=url, ref=id_))
