@@ -1,4 +1,5 @@
 import io
+from markdown2 import markdown as _markdown
 
 def posts_iter(input):
     for line in input:
@@ -19,3 +20,9 @@ def posts_iter(input):
 
 def posts(input):
     return list(posts_iter(input))
+
+def markdown(string):
+    return _markdown(
+        string,
+        extras=('code-friendly', 'smarty-pants')
+    )

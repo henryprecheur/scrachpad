@@ -1,8 +1,6 @@
 import sys
 import common
 
-from markdown2 import markdown
-
 if __name__ == '__main__':
     sys.stdout.write('''<!DOCTYPE html>
 <html>
@@ -28,7 +26,7 @@ if __name__ == '__main__':
                          '<article id=%s>\n'
                          "<time datetime=%s pubdate><a href='#%s'>%s</a></time>"
                          '</a>\n' % (id_, id_, id_, id_))
-        x = markdown(body)
+        x = common.markdown(body)
         x = x.encode('utf8', 'xmlcharrefreplace')
         sys.stdout.write(x)
         sys.stdout.write('</article>\n')
