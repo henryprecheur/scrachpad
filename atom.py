@@ -20,7 +20,7 @@ if __name__ == '__main__':
 <title>Scratchpad</title>
 <updated>${time}</updated>
 <link rel="self" href="$url/feed.atom" />
-<link rel="self" href="$url/" />\n
+<link rel="alternate" type="text/html" href="$url/" />\n
 ''').safe_substitute(url=url, time=updated))
 
     for id_, body in posts:
