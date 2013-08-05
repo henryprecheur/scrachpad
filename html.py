@@ -12,13 +12,17 @@ if __name__ == '__main__':
     <link rel='stylesheet'
      href='//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css'>
     <link rel='stylesheet'
-     href='//fonts.googleapis.com/css?family=Source+Code+Pro:400,700|Open+Sans'>
+     href='//fonts.googleapis.com/css?family=Source+Code+Pro|Open+Sans|Vollkorn'>
     <style>
         body {
             margin: 0 auto;
-            max-width: 50rem;
+            max-width: 42rem;
             font-family: 'Open Sans', sans-serif;
             line-height: 140%;
+            background-color: #f8f8fe;
+            color: #1d1d1a;
+            text-rendering: optimizeLegibility;
+            font-feature-settings: 'liga' 1;
         }
         p { line-height: 150% }
         code, kbd, pre, samp {
@@ -29,6 +33,8 @@ if __name__ == '__main__':
             border-top: 1px solid grey;
             border-bottom: 1px solid grey;
             padding: 0.5em;
+            line-height: 125%;
+            font-size: 85%;
         }
         header, footer { padding: 0.5em; margin: 0.5em }
         article { padding: 1.2em; border-bottom: 1px solid silver }
