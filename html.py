@@ -12,21 +12,19 @@ if __name__ == '__main__':
     <link rel='stylesheet'
      href='//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css'>
     <link rel='stylesheet'
-     href='//fonts.googleapis.com/css?family=Source+Code+Pro|Open+Sans|Vollkorn'>
+     href='//fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro'>
     <style>
         body {
             margin: 0 auto;
-            max-width: 42rem;
-            font-family: 'Open Sans', sans-serif;
+            max-width: 36rem;
+            font-family: 'Source Sans Pro', sans-serif;
             line-height: 140%;
             background-color: #f8f8fe;
             color: #1d1d1a;
-            text-rendering: optimizeLegibility;
-            font-feature-settings: 'liga' 1;
         }
         p { line-height: 150% }
         code, kbd, pre, samp {
-            font-family: 'Source Code Pro', monospace , serif;
+            font-family: 'Source Code Pro', monospace;
         }
         pre {
             background-color: silver;
@@ -34,10 +32,10 @@ if __name__ == '__main__':
             border-bottom: 1px solid grey;
             padding: 0.5em;
             line-height: 125%;
-            font-size: 85%;
         }
-        header, footer { padding: 0.5em; margin: 0.5em }
-        article { padding: 1.2em; border-bottom: 1px solid silver }
+        pre, article > time { font-size: 80% }
+        header, footer { margin: 0.2em 1em }
+        article { padding: 1em 0; border-bottom: 1px solid silver }
         a { text-decoration: none; color: #3F72D8; border-bottom: 1px dotted }
         a:hover { border-bottom: 1px solid }
 
@@ -57,7 +55,7 @@ if __name__ == '__main__':
         @media all and (max-width:520px){html {font-size: 12px;}}
     </style>
 </head>
-<body class='pure'>
+<body>
 <header>This is my strachpad, where I learn and make mistakes.</header>\n''')
 
     for id_, body in reversed(common.posts(sys.stdin)):
