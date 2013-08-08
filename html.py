@@ -12,12 +12,12 @@ if __name__ == '__main__':
     <link rel='stylesheet'
      href='//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css'>
     <link rel='stylesheet'
-     href='//fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro'>
+     href='//fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro|Vollkorn'>
     <style>
         body {
-            margin: 0 auto;
+            margin: 0 0.5em;
             max-width: 36rem;
-            font-family: 'Source Sans Pro', sans-serif;
+            font-family: 'Vollkorn', serif;
             line-height: 140%;
             background-color: #f8f8fe;
             color: #1d1d1a;
@@ -34,9 +34,14 @@ if __name__ == '__main__':
             line-height: 125%;
         }
         pre, article > time { font-size: 80% }
+        h1, h2, article > time {
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+        h1 { font-size: 150% }
+        h2 { font-size: 125% }
         header, footer { margin: 0.2em 1em }
         article { padding: 1em 0; border-bottom: 1px solid silver }
-        a { text-decoration: none; color: #3F72D8; border-bottom: 1px dotted }
+        a { text-decoration: none; color: #1d1d1a; border-bottom: 1px dotted }
         a:hover { border-bottom: 1px solid }
 
         @media all {html {font-size: 24px;}}
