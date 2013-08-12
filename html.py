@@ -17,7 +17,7 @@ if __name__ == '__main__':
         body {
             margin: 0 0.5em;
             max-width: 36rem;
-            font-family: 'Vollkorn', serif;
+            font-family: 'Charter', serif;
             line-height: 140%;
             background-color: #f8f8fe;
             color: #1d1d1a;
@@ -43,6 +43,15 @@ if __name__ == '__main__':
         article { padding: 1em 0; border-bottom: 1px solid silver }
         a { text-decoration: none; color: #1d1d1a; border-bottom: 1px dotted }
         a:hover { border-bottom: 1px solid }
+
+        @font-face {
+            font-family: 'Charter';
+            src: url('charter_regular-webfont.eot');
+            src: url('charter_regular-webfont.eot?#iefix') format('embedded-opentype'),
+                 url('charter_regular-webfont.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+        }
 
         @media all {html {font-size: 24px;}}
         @media all and (max-width:1000px){html {font-size: 24px;}}
