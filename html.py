@@ -12,16 +12,17 @@ if __name__ == '__main__':
     <link rel='stylesheet'
      href='//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.css'>
     <link rel='stylesheet'
-     href='//fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro|Vollkorn'>
+     href='//fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro'>
     <style>
         body {
-            margin: 0 0.5em;
+            margin: 0 auto;
             max-width: 36rem;
             font-family: 'Charter', serif;
             line-height: 140%;
             background-color: #f8f8fe;
             color: #1d1d1a;
         }
+        body > * { margin: 0.2em }
         p { line-height: 150% }
         code, kbd, pre, samp {
             font-family: 'Source Code Pro', monospace;
