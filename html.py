@@ -19,20 +19,24 @@ if __name__ == '__main__':
             max-width: 36rem;
             font-family: 'Charter', serif;
             line-height: 140%;
-            background-color: #f8f8fe;
+            background-color: #fafafb;
             color: #1d1d1a;
         }
         body > * { margin: 0.2em }
-        p { line-height: 150% }
+        p { line-height: 145% }
         code, kbd, pre, samp {
             font-family: 'Source Code Pro', monospace;
         }
         pre {
-            background-color: silver;
+            background-color: #eaeaeb;
             border-top: 1px solid grey;
             border-bottom: 1px solid grey;
             padding: 0.5em;
             line-height: 125%;
+        }
+        blockquote {
+            font-size: 95%;
+            line-height: 120%;
         }
         pre, article > time { font-size: 80% }
         h1, h2, article > time {
