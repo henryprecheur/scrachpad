@@ -28,10 +28,7 @@ if __name__ == '__main__':
             font-family: 'Source Code Pro', monospace;
         }
         pre {
-            background-color: #eaeaeb;
-            border-top: 1px solid grey;
-            border-bottom: 1px solid grey;
-            padding: 0.5em;
+            margin-left: 1em;
             line-height: 125%;
         }
         blockquote {
