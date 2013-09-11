@@ -16,13 +16,13 @@ if __name__ == '__main__':
     <style>
         body {
             margin: 0 auto;
-            max-width: 36rem;
-            font-family: 'Charter', serif;
+            max-width: 34rem;
+            font-family: 'Charter', Georgia, 'DejaVu Serif', Times, serif;
             line-height: 140%;
             background-color: #fafafb;
             color: #1d1d1a;
         }
-        body > * { margin: 0.2em }
+        body > * { margin: 0.2em 0.5em }
         p { line-height: 145% }
         code, kbd, pre, samp {
             font-family: 'Source Code Pro', monospace;
@@ -33,26 +33,36 @@ if __name__ == '__main__':
         }
         blockquote {
             font-size: 95%;
+            font-style: italic;
             line-height: 120%;
         }
         pre, article > time { font-size: 80% }
         h1, h2, article > time {
-            font-family: 'Source Sans Pro', sans-serif;
+            font-family: 'Source Sans Pro', Verdana, sans-serif;
         }
         h1 { font-size: 150% }
         h2 { font-size: 125% }
         header, footer { margin: 0.2em 1em }
         article { padding: 1em 0; border-bottom: 1px solid silver }
-        a { text-decoration: none; color: #1d1d1a; border-bottom: 1px dotted }
+        a { text-decoration: none; color: inherit; border-bottom: 1px dotted }
         a:hover { border-bottom: 1px solid }
 
         @font-face {
             font-family: 'Charter';
-            src: url('charter_regular-webfont.eot');
-            src: url('charter_regular-webfont.eot?#iefix') format('embedded-opentype'),
-                 url('charter_regular-webfont.woff') format('woff');
+            src: url('charter/regular.eot');
+            src: url('charter/regular.eot?#iefix') format('embedded-opentype'),
+                 url('charter/regular.woff') format('woff');
             font-weight: normal;
             font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'Charter';
+            src: url('charter/italic.eot');
+            src: url('charter/italic.eot?#iefix') format('embedded-opentype'),
+                 url('charter/italic.woff') format('woff');
+            font-weight: normal;
+            font-style: italic;
         }
 
         @media all {html {font-size: 24px;}}
