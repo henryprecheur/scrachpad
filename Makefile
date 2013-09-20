@@ -21,6 +21,9 @@ log:
 relog:
 	curl -s http://henry.precheur.org/scratchpad/log > log
 
+serve:
+	$(PYTHON) -m SimpleHTTPServer 8080
+
 clean:
 	rm -f index.html feed.atom normalize.css
 
