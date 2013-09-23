@@ -4,7 +4,7 @@ VIRTUALENV_URL='https://github.com/pypa/virtualenv/releases/tag/1.10.1'
 
 all: index.html feed.atom
 
-index.html: log html.py
+index.html: log html.py style.css
 	.env/bin/python html.py < log > $@
 
 feed.atom: log atom.py
