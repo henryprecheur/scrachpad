@@ -1,10 +1,10 @@
 body {
         margin: 0 auto;
-        max-width: 34rem;
+        max-width: 34em;
         font-family: 'Charter', Georgia, 'DejaVu Serif', Times, serif;
         line-height: 140%;
-        background-color: #fafafb;
-        color: #1d1d1a;
+        background-color: #fff;
+        color: #333;
 }
 
 body > * { margin: 0.2em 1em }
@@ -70,6 +70,3 @@ a:hover { border-bottom: 1px solid }
 @media (min-width: 1010px){html{font-size:19px}}
 @media (min-width: 1080px){html{font-size:20px}}
 @media (min-width: 1150px){html{font-size:21px}}
-@media (min-width: 1220px){html{font-size:22px}}
-@media (min-width: 1290px){html{font-size:23px}}
-@media (min-width: 1360px){html{font-size:24px}}
