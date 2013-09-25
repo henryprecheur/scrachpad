@@ -1,6 +1,4 @@
-PYTHON=python
-VIRTUALENV_URL='https://github.com/pypa/virtualenv/releases/tag/1.10.1'
-
+VIRTUALENV=virtualenv
 
 all: index.html feed.atom
 
@@ -11,8 +9,7 @@ feed.atom: log atom.py
 	.env/bin/python atom.py < log > $@
 
 bootstrap:
-	curl -s $(VIRTUALENV_URL) | tar zxf -
-	curl -s $(VIRTUALENV_URL) | $(PYTHON) - .env
+	$(VIRTUALENV) .env
 	.env/bin/pip install --upgrade html5lib markdown2
 
 log:
@@ -22,7 +19,7 @@ relog:
 	curl -s http://henry.precheur.org/scratchpad/log > log
 
 serve:
-	$(PYTHON) -m SimpleHTTPServer 8080
+	.env/bin/python -m SimpleHTTPServer
 
 clean:
 	rm -f index.html feed.atom normalize.css
