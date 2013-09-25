@@ -18,7 +18,7 @@ if __name__ == '__main__':
 </head>
 <body>
 <header>This is my strachpad, where I learn and make mistakes.</header>
-'''.format(style=style)
+'''.format(style=style))
 
     for id_, body in reversed(common.posts(sys.stdin)):
         sys.stdout.write(
