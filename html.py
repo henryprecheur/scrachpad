@@ -2,6 +2,9 @@ import sys
 import common
 
 if __name__ == '__main__':
+    style = (
+        open('normalize.css').read() + open('style.css').read()
+    )
     sys.stdout.write('''<!DOCTYPE html>
 <html>
 <head>
@@ -10,14 +13,12 @@ if __name__ == '__main__':
     <title>Scratch pad</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet'
-     href='//cdnjs.cloudflare.com/ajax/libs/normalize/2.1.0/normalize.min.css'>
-    <link rel='stylesheet'
      href='//fonts.googleapis.com/css?family=Source+Code+Pro'>
     <style>{style}</style>
 </head>
 <body>
 <header>This is my strachpad, where I learn and make mistakes.</header>
-'''.format(style=open('style.css').read()))
+'''.format(style=style)
 
     for id_, body in reversed(common.posts(sys.stdin)):
         sys.stdout.write(
