@@ -12,8 +12,8 @@ if __name__ == '__main__':
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Scratch pad</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet'
-     href='//fonts.googleapis.com/css?family=Source+Code+Pro'>
+    <link rel='stylesheet' type='text/css'
+     href='http://fonts.googleapis.com/css?family=PT+Mono'>
     <style>{style}</style>
 </head>
 <body>

@@ -10,7 +10,7 @@ body {
 body > * { margin: 0.2em 1em }
 p { line-height: 145% }
 code, kbd, pre, samp {
-        font-family: 'Source Code Pro', monospace;
+        font-family: 'PT Mono', monospace;
         font-style: normal;
 }
 pre {
