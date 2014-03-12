@@ -13,7 +13,7 @@ if __name__ == '__main__':
     <title>Scratch pad</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' type='text/css'
-     href='http://fonts.googleapis.com/css?family=PT+Mono'>
+     href='http://fonts.googleapis.com/css?family=Anonymous+Pro'>
     <style>{style}</style>
 </head>
 <body>

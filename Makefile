@@ -22,6 +22,6 @@ serve:
 	.env/bin/python -m SimpleHTTPServer
 
 clean:
-	rm -f index.html feed.atom normalize.css
+	rm -f index.html feed.atom
 
 .PHONY: clean relog all
