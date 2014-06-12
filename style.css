@@ -1,6 +1,6 @@
 body {
         margin: 0 auto;
-        max-width: 34em;
+        max-width: 38em;
         font-family: 'Charter', Georgia, 'DejaVu Serif', Times, serif;
         line-height: 140%;
         background-color: #fff;
@@ -22,7 +22,8 @@ blockquote {
         font-style: italic;
         line-height: 120%;
 }
-pre, article > time { font-size: 80% }
+article > time { font-size: 80% }
+pre { font-size: 90% }
 h1, h2, header, footer {
         font-style: italic;
         text-align: center;
