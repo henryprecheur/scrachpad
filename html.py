@@ -58,9 +58,7 @@ if __name__ == '__main__':
 
     for id, body in articles:
         open(id + '.html', 'w').write(
-            page(
-                title='Scratch pad &em; ' + id, body=body
-            )
+            page(title=id, body=body)
         )
 
     body = (
