@@ -24,10 +24,16 @@ if __name__ == '__main__':
 '''.format(url=url, time=updated))
 
     for id_, body in posts:
+        # Changed the ID in august 2014
+        if id_ < '2014-07':
+            entry_id = url + '/#' + id_
+        else:
+            entry_id = url + '/' + id_
+
         out('''\
 <entry>
-  <id>{url}/#{ref}</id>
-  <link href='{url}/#{ref}' />
+  <id>{entry_id}</id>
+  <link href='{url}/{ref}' />
   <title>{ref}</title>
   <updated>{ref}</updated>
   <author>
@@ -36,7 +42,7 @@ if __name__ == '__main__':
   </author>
   <content type="xhtml">
     <div xmlns="http://www.w3.org/1999/xhtml">
-'''.format(url=url, ref=id_))
+'''.format(url=url, ref=id_, entry_id=entry_id))
         x = xmlize(markdown(body))
         out(x.encode('utf8', 'xmlcharrefreplace'))
         out('    </div>\n  </content>\n</entry>\n')
