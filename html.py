@@ -1,5 +1,6 @@
 import sys
 import common
+from urllib import quote
 
 def page(title, body):
     style = (
@@ -45,10 +46,10 @@ def article(id, body):
     return (
         "<article id='{id}'>\n"
         "<time datetime='{id}' pubdate>"
-        "<a href='{id}'>{id}</a></time>\n"
+        "<a href='{url}'>{id}</a></time>\n"
         "{body}\n"
         "</article>\n"
-    ).format(id=id, body=x)
+    ).format(id=id, url=quote(id), body=x)
 
 if __name__ == '__main__':
     articles = list(
