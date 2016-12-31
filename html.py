@@ -63,8 +63,7 @@ if __name__ == '__main__':
         )
 
     body = (
-        '<header>This is my strachpad, where I learn and make '
-        'mistakes.</header>' +
+        '<header>Spreading my ignorange</header>' +
         '\n'.join(i for _, i in articles)
     )
 
