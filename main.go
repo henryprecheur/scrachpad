@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"log"
 	"os"
 	"time"
 
@@ -101,7 +102,9 @@ func parseLog(reader io.Reader) ([]Post, error) {
 }
 
 func main() {
-	var reader = bufio.NewReader(os.Stdin)
-
-	parseLog(reader)
+	var posts, err = parseLog(bufio.NewReader(os.Stdin))
+	if err != io.EOF {
+		log.Fatalf("error while parsing: %s", err)
+	}
+	fmt.Printf("%q\n", posts)
 }
