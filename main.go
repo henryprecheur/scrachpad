@@ -101,6 +101,79 @@ func parseLog(reader io.Reader) ([]Post, error) {
 	return posts, nil
 }
 
+//
+// HTML generation
+//
+const pageTemplate = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>{{ .Title }}</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Anonymous+Pro'>
+<style>{{ .Style }}</style>
+</head>
+<body>
+{{ .Body }}
+</body>
+<footer>Contact me: <a href='mailto:Henry Precheur <henry@precheur.org>'>Henry Pr&ecirc;cheur</a></footer>
+<script type="text/javascript">
+
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-20945988-4']);
+_gaq.push(['_trackPageview']);
+
+(function() {{
+ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+}})();
+</script>
+</html>`
+
+const atomTemplate = `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+<id>{{ .Url }}</id>
+<title>Scratchpad</title>
+<updated>{{ .Updated }}</updated>
+<link rel="self" href="{{ .Url }}/feed.atom" />
+<link rel="alternate" type="text/html" href="{{ .Url }}/" />
+{{ range .Posts }}
+{{ end }}
+'''.format(url=url, time=updated))
+
+    for id_, body in posts:
+        # Changed the ID in august 2014
+        if id_ < '2014-07':
+            entry_id = url + '/#' + id_
+        else:
+            entry_id = url + '/' + id_
+
+        out('''\
+<entry>
+  <id>{entry_id}</id>
+  <link href='{url}/{ref}' />
+  <title>{ref}</title>
+  <updated>{ref}</updated>
+  <author>
+    <name>Henry Pr&#234;cheur</name>
+    <email>henry@precheur.org</email>
+  </author>
+  <content type="xhtml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+'''.format(url=url, ref=id_, entry_id=entry_id))
+        x = xmlize(markdown(body))
+        out(x.encode('utf8', 'xmlcharrefreplace'))
+        out('    </div>\n  </content>\n</entry>\n')
+out('</feed>')
+`
+
+func makeAtom(posts []Post, writer io.Writer) error {
+
+}
+
 func main() {
 	var posts, err = parseLog(bufio.NewReader(os.Stdin))
 	if err != io.EOF {
