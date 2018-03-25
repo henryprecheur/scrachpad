@@ -249,8 +249,8 @@ func readStyle() (string, error) {
 	return buf.String(), nil
 }
 
-func openFile(filename string) (*File, error) {
-
+func openFile(filename string) (*os.File, error) {
+	return os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
 }
 
 func makeIndexHTML(base *template.Template, posts []HTMLPost, style string) error {
@@ -259,7 +259,7 @@ func makeIndexHTML(base *template.Template, posts []HTMLPost, style string) erro
 		return err
 	}
 
-	indexFile, err := os.OpenFile("index.html", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0)
+	indexFile, err := openFile("index.html")
 	if err != nil {
 		return err
 	}
@@ -282,11 +282,35 @@ func makeIndexHTML(base *template.Template, posts []HTMLPost, style string) erro
 }
 
 func makePagesHTML(tmpl *template.Template, posts []HTMLPost, style string) error {
+	for _, post := range posts {
+		var file, err = openFile(post.Id + ".html")
+		if err != nil {
+			return err
+		}
 
+		var x = struct {
+			Title string
+			Style string
+			Post  *HTMLPost
+		}{
+			Title: post.Timestamp,
+			Style: style,
+			Post:  &post,
+		}
+
+		err = tmpl.Execute(file, x)
+		if err1 := file.Close(); err == nil {
+			err = err1
+		}
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func makeHTML(posts []HTMLPost) error {
-	tmpl, err := template.New("page.html").Parse(htmlPageTemplate)
+	tmpl, err := template.New("html").Parse(htmlPageTemplate)
 	if err != nil {
 		return err
 	}
@@ -296,7 +320,11 @@ func makeHTML(posts []HTMLPost) error {
 		return err
 	}
 
-	return makeIndexHTML(tmpl, posts, style)
+	if err := makeIndexHTML(tmpl, posts, style); err != nil {
+		return err
+	}
+
+	return makePagesHTML(tmpl, posts, style)
 }
 
 func main() {
