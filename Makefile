@@ -2,15 +2,15 @@ VIRTUALENV=virtualenv
 
 all: index.html feed.atom
 
-index.html: log html.py style.css
+index.html: log html.py common.py
 	.env/bin/python html.py < log > $@
 
-feed.atom: log atom.py
+feed.atom: log atom.py xmlize.py common.py
 	.env/bin/python atom.py < log > $@
 
 bootstrap:
 	$(VIRTUALENV) .env
-	.env/bin/pip install --upgrade html5lib markdown2
+	.env/bin/pip install -r requirements.txt
 
 log:
 	curl -s http://henry.precheur.org/scratchpad/log > log
@@ -18,10 +18,7 @@ log:
 relog:
 	curl -s http://henry.precheur.org/scratchpad/log > log
 
-serve:
-	.env/bin/python -m SimpleHTTPServer
-
 clean:
-	rm -f 201*.html index.html feed.atom
+	rm -f 20[1-9]*.html index.html feed.atom
 
 .PHONY: clean relog all
