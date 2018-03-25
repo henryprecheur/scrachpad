@@ -283,17 +283,8 @@ func makeHTML(posts []HTMLPost) error {
 	if err != nil {
 		return err
 	}
-	indexFile, err := os.OpenFile("index.html", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0)
-	if err != nil {
-		return err
-	}
-	err = indexTmpl.Execute(indexFile, x)
-	if err != nil {
-		return err
-	}
-	indexFile.Close()
 
-	return nil
+	return makeIndexHTML(tmpl, posts, style)
 }
 
 func main() {
