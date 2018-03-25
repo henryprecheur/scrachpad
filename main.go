@@ -5,11 +5,13 @@ import (
 	"bytes"
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"os"
+	"text/template"
 	"time"
 
-	_ "github.com/russross/blackfriday"
+	"github.com/russross/blackfriday"
 )
 
 type Post struct {
@@ -104,7 +106,100 @@ func parseLog(reader io.Reader) ([]Post, error) {
 //
 // HTML generation
 //
-const pageTemplate = `<!DOCTYPE html>
+type HTMLPost struct {
+	Id               string
+	RFC3339Timestamp string
+	Body             string
+}
+
+//
+// 1. generate id from timestamp
+// 2. format timestamp
+// 3. process body with blackfriday markdown processor
+//
+func processPosts(posts []Post) []HTMLPost {
+	var r []HTMLPost
+
+	for _, p := range posts {
+		var id string
+
+		ts := p.Timestamp
+		if ts.Before(time.Date(2014, 7, 1, 0, 0, 0, 0, time.UTC)) {
+			id = "#" + ts.Format(time.RFC3339)
+		} else if ts.Before(time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC)) {
+			id = ts.Format(time.RFC3339)
+		} else {
+			id = ts.Format("20060102_150405")
+		}
+
+		var h = HTMLPost{
+			Id:               id,
+			RFC3339Timestamp: p.Timestamp.Format(time.RFC3339),
+			Body:             string(blackfriday.MarkdownCommon(p.Body)),
+		}
+		r = append(r, h)
+	}
+
+	var res []HTMLPost
+	// reverse order
+	for i := len(r); i > 0; i-- {
+		res = append(res, r[i-1])
+	}
+	return res
+}
+
+const atomTemplate = `<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+<id>http://henry.precheur.org/scratchpad</id>
+<title>Scratchpad</title>
+<updated>{{ .Updated }}</updated>
+<link rel="self" href="http://henry.precheur.org/scratchpad/feed.atom" />
+<link rel="alternate" type="text/html" href="http://henry.precheur.org/scratchpad/" />{{ range .Posts }}
+<entry>
+  <id>http://henry.precheur.org/scratchpad/{{ .Id }}</id>
+  <link href='http://henry.precheur.org/scratchpad/{{ .Id }}' />
+  <title>{{ .RFC3339Timestamp }}</title>
+  <updated>{{ .RFC3339Timestamp }}</updated>
+  <author>
+    <name>Henry Pr&#234;cheur</name>
+    <email>henry@precheur.org</email>
+  </author>
+  <content type="xhtml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+{{ .Body }}</div>
+  </content>
+</entry>{{ end }}
+</feed>`
+
+func makeAtom(posts []HTMLPost, writer io.Writer) error {
+	tmpl, err := template.New("atom").Parse(atomTemplate)
+	if err != nil {
+		return err
+	}
+
+	var x = struct {
+		Updated string
+		Posts   []HTMLPost
+	}{
+		Updated: posts[0].RFC3339Timestamp,
+		Posts:   posts,
+	}
+	err = tmpl.Execute(writer, x)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+const htmlPageTemplate = `{{ define "article" }}
+<article id='{{ .Id }}'>
+<time datetime='{{ .RFC3339Timestamp }}' pubdate>
+<a href='http://henry.precheur.org/scratchpad/{{ .Id }}'>{{ .RFC3339Timestamp }}</a></time>
+{{ .Body }}
+</article>
+{{ end }}<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
@@ -115,7 +210,7 @@ const pageTemplate = `<!DOCTYPE html>
 <style>{{ .Style }}</style>
 </head>
 <body>
-{{ .Body }}
+{{ block "body" . }}{{ template "article" .Post }}{{ end }}
 </body>
 <footer>Contact me: <a href='mailto:Henry Precheur <henry@precheur.org>'>Henry Pr&ecirc;cheur</a></footer>
 <script type="text/javascript">
@@ -124,54 +219,81 @@ var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-20945988-4']);
 _gaq.push(['_trackPageview']);
 
-(function() {{
+(function() {
  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
  ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-}})();
+})();
 </script>
 </html>`
 
-const atomTemplate = `<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+const htmlIndexTemplate = `{{ define "body" }}<header>Spreading my ignorange</header>
+{{ range .Posts }}{{ template "article" . }}{{ end }}
+{{ end }}`
 
-<id>{{ .Url }}</id>
-<title>Scratchpad</title>
-<updated>{{ .Updated }}</updated>
-<link rel="self" href="{{ .Url }}/feed.atom" />
-<link rel="alternate" type="text/html" href="{{ .Url }}/" />
-{{ range .Posts }}
-{{ end }}
-'''.format(url=url, time=updated))
+func readStyle() (string, error) {
+	norm, err := ioutil.ReadFile("normalize.css")
+	if err != nil {
+		return "", err
+	}
+	style, err := ioutil.ReadFile("style.css")
+	if err != nil {
+		return "", err
+	}
+	var buf bytes.Buffer
+	buf.Write(norm)
+	buf.Write([]byte("\n"))
+	buf.Write(style)
+	return buf.String(), nil
+}
 
-    for id_, body in posts:
-        # Changed the ID in august 2014
-        if id_ < '2014-07':
-            entry_id = url + '/#' + id_
-        else:
-            entry_id = url + '/' + id_
+func makeIndexHTML(base *template.Template, posts []HTMLPost, style string) error {
+	indexTmpl, err := template.Must(base.Clone()).Parse(htmlIndexTemplate)
+	if err != nil {
+		return err
+	}
 
-        out('''\
-<entry>
-  <id>{entry_id}</id>
-  <link href='{url}/{ref}' />
-  <title>{ref}</title>
-  <updated>{ref}</updated>
-  <author>
-    <name>Henry Pr&#234;cheur</name>
-    <email>henry@precheur.org</email>
-  </author>
-  <content type="xhtml">
-    <div xmlns="http://www.w3.org/1999/xhtml">
-'''.format(url=url, ref=id_, entry_id=entry_id))
-        x = xmlize(markdown(body))
-        out(x.encode('utf8', 'xmlcharrefreplace'))
-        out('    </div>\n  </content>\n</entry>\n')
-out('</feed>')
-`
+	indexFile, err := os.OpenFile("index.html", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0)
+	if err != nil {
+		return err
+	}
 
-func makeAtom(posts []Post, writer io.Writer) error {
+	var x = struct {
+		Title string
+		Style string
+		Posts []HTMLPost
+	}{
+		Title: "Scratch pad",
+		Style: style,
+		Posts: posts,
+	}
 
+	err = indexTmpl.Execute(indexFile, x)
+	indexFile.Close()
+	return err
+}
+
+func makeHTML(posts []HTMLPost) error {
+	tmpl, err := template.New("page.html").Parse(htmlPageTemplate)
+	if err != nil {
+		return err
+	}
+
+	style, err := readStyle()
+	if err != nil {
+		return err
+	}
+	indexFile, err := os.OpenFile("index.html", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0)
+	if err != nil {
+		return err
+	}
+	err = indexTmpl.Execute(indexFile, x)
+	if err != nil {
+		return err
+	}
+	indexFile.Close()
+
+	return nil
 }
 
 func main() {
@@ -179,5 +301,12 @@ func main() {
 	if err != io.EOF {
 		log.Fatalf("error while parsing: %s", err)
 	}
-	fmt.Printf("%q\n", posts)
+
+	var h = processPosts(posts)
+
+	atomFile, err := os.OpenFile("feed.atom", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0)
+	makeAtom(h, atomFile)
+	atomFile.Close()
+
+	fmt.Println(makeHTML(h))
 }
