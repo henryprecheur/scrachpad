@@ -9,8 +9,10 @@
     <link rel="stylesheet" type='text/css' href="style.css">
 </head>
 <body>
-<article id='{{ .Timestamp }}'>
-<time datetime='{{ .Timestamp }}' pubdate>{{ .Timestamp }}</time>
+<article id='{{ .Id }}'>
+<time datetime='{{ .Timestamp }}' pubdate>
+    <a href='../#{{ urlquery .Id }}'>{{ .Timestamp }}</a>
+</time>
 {{ .Body }}
 </article>
 </body>

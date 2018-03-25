@@ -9,7 +9,7 @@
     <link rel="stylesheet" type='text/css' href="style.css">
 </head>
 <body><header>Spreading my ignorange</header>{{ range . }}
-<article id='{{ .Timestamp }}'>
+<article id='{{ .Id }}'>
 <time datetime='{{ .Timestamp }}' pubdate><a href='{{ urlquery .Id }}'>{{ .Timestamp }}</a></time>
 {{ .Body }}
 </article>
