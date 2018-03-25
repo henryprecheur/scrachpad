@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+<id>http://henry.precheur.org/scratchpad</id>
+<title>Scratchpad</title>
+<updated>{{ (index . 0).Timestamp }}</updated>
+<link rel="self" href="http://henry.precheur.org/scratchpad/feed.atom" />
+<link rel="alternate" type="text/html" href="http://henry.precheur.org/scratchpad/" />{{ range . }}
+<entry>
+  <id>http://henry.precheur.org/scratchpad/{{ .AtomId }}</id>
+  <link href='http://henry.precheur.org/scratchpad/{{ .AtomId }}' />
+  <title>{{ .Timestamp }}</title>
+  <updated>{{ .Timestamp }}</updated>
+  <author>
+    <name>Henry Pr&#234;cheur</name>
+    <email>henry@precheur.org</email>
+  </author>
+  <content type="xhtml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+{{ .Body }}</div>
+  </content>
+</entry>{{ end }}
+</feed>

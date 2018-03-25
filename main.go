@@ -5,7 +5,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"text/template"
@@ -155,44 +154,22 @@ func processPosts(posts []Post) []HTMLPost {
 	return res
 }
 
-const atomTemplate = `<?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
+func openFile(filename string) (*os.File, error) {
+	return os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
+}
 
-<id>http://henry.precheur.org/scratchpad</id>
-<title>Scratchpad</title>
-<updated>{{ .Updated }}</updated>
-<link rel="self" href="http://henry.precheur.org/scratchpad/feed.atom" />
-<link rel="alternate" type="text/html" href="http://henry.precheur.org/scratchpad/" />{{ range .Posts }}
-<entry>
-  <id>http://henry.precheur.org/scratchpad/{{ .AtomId }}</id>
-  <link href='http://henry.precheur.org/scratchpad/{{ .AtomId }}' />
-  <title>{{ .Timestamp }}</title>
-  <updated>{{ .Timestamp }}</updated>
-  <author>
-    <name>Henry Pr&#234;cheur</name>
-    <email>henry@precheur.org</email>
-  </author>
-  <content type="xhtml">
-    <div xmlns="http://www.w3.org/1999/xhtml">
-{{ .Body }}</div>
-  </content>
-</entry>{{ end }}
-</feed>`
-
-func makeAtom(posts []HTMLPost, writer io.Writer) error {
-	tmpl, err := template.New("atom").Parse(atomTemplate)
+func makeAtom(posts []HTMLPost) error {
+	tmpl, err := template.New("feed.atom.template").ParseFiles("feed.atom.template")
 	if err != nil {
 		return err
 	}
 
-	var x = struct {
-		Updated string
-		Posts   []HTMLPost
-	}{
-		Updated: posts[0].Timestamp,
-		Posts:   posts,
+	output, err := openFile("feed.atom")
+	if err != nil {
+		return err
 	}
-	err = tmpl.Execute(writer, x)
+
+	err = tmpl.Execute(output, posts)
 	if err != nil {
 		return err
 	}
@@ -200,61 +177,8 @@ func makeAtom(posts []HTMLPost, writer io.Writer) error {
 	return nil
 }
 
-const htmlPageTemplate = `{{ define "article" }}
-<article id='{{ .Timestamp }}'>
-<time datetime='{{ .Timestamp }}' pubdate><a href='{{ urlquery .Id }}'>{{ .Timestamp }}</a></time>
-{{ .Body }}
-</article>
-{{ end }}<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>{{ .Title }}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Anonymous+Pro'>
-    <style>{{ .Style }}</style>
-</head>
-<body>
-{{ block "body" . }}{{ template "article" .Post }}{{ end }}
-</body>
-<footer>Contact me: <a href='mailto:Henry Precheur <henry@precheur.org>'>Henry Pr&ecirc;cheur</a></footer>
-<script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-20945988-4']);
-_gaq.push(['_trackPageview']);
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
-</script>
-</html>`
-
-const htmlIndexTemplate = `{{ define "body" }}<header>Spreading my ignorange</header>
-{{ range .Posts }}{{ template "article" . }}{{ end }}{{ end }}`
-
-func readStyle() (string, error) {
-	norm, err := ioutil.ReadFile("normalize.css")
-	if err != nil {
-		return "", err
-	}
-	style, err := ioutil.ReadFile("style.css")
-	if err != nil {
-		return "", err
-	}
-	var buf bytes.Buffer
-	buf.Write(norm)
-	buf.Write(style)
-	return buf.String(), nil
-}
-
-func openFile(filename string) (*os.File, error) {
-	return os.OpenFile(filename, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
-}
-
-func makeIndexHTML(base *template.Template, posts []HTMLPost, style string) error {
-	indexTmpl, err := template.Must(base.Clone()).Parse(htmlIndexTemplate)
+func makeIndexHTML(posts []HTMLPost) error {
+	tmpl, err := template.New("index.html.template").ParseFiles("index.html.template")
 	if err != nil {
 		return err
 	}
@@ -264,41 +188,26 @@ func makeIndexHTML(base *template.Template, posts []HTMLPost, style string) erro
 		return err
 	}
 
-	var x = struct {
-		Title string
-		Style string
-		Posts []HTMLPost
-	}{
-		Title: "Scratch pad",
-		Style: style,
-		Posts: posts,
-	}
-
-	err = indexTmpl.Execute(indexFile, x)
+	err = tmpl.Execute(indexFile, posts)
 	if err1 := indexFile.Close(); err == nil {
 		err = err1
 	}
 	return err
 }
 
-func makePagesHTML(tmpl *template.Template, posts []HTMLPost, style string) error {
+func makePagesHTML(posts []HTMLPost) error {
+	tmpl, err := template.New("page.html.template").ParseFiles("page.html.template")
+	if err != nil {
+		return err
+	}
+
 	for _, post := range posts {
 		var file, err = openFile(post.Id + ".html")
 		if err != nil {
 			return err
 		}
 
-		var x = struct {
-			Title string
-			Style string
-			Post  *HTMLPost
-		}{
-			Title: post.Timestamp,
-			Style: style,
-			Post:  &post,
-		}
-
-		err = tmpl.Execute(file, x)
+		err = tmpl.Execute(file, post)
 		if err1 := file.Close(); err == nil {
 			err = err1
 		}
@@ -310,21 +219,11 @@ func makePagesHTML(tmpl *template.Template, posts []HTMLPost, style string) erro
 }
 
 func makeHTML(posts []HTMLPost) error {
-	tmpl, err := template.New("html").Parse(htmlPageTemplate)
-	if err != nil {
+	if err := makeIndexHTML(posts); err != nil {
 		return err
 	}
 
-	style, err := readStyle()
-	if err != nil {
-		return err
-	}
-
-	if err := makeIndexHTML(tmpl, posts, style); err != nil {
-		return err
-	}
-
-	return makePagesHTML(tmpl, posts, style)
+	return makePagesHTML(posts)
 }
 
 func main() {
@@ -335,9 +234,11 @@ func main() {
 
 	var h = processPosts(posts)
 
-	atomFile, err := os.OpenFile("feed.atom", os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0)
-	makeAtom(h, atomFile)
-	atomFile.Close()
+	if err := makeAtom(h); err != nil {
+		log.Fatal(err)
+	}
 
-	fmt.Println(makeHTML(h))
+	if err := makeHTML(h); err != nil {
+		log.Fatal(err)
+	}
 }
