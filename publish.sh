@@ -9,4 +9,7 @@ test -d $dir || mkdir $dir
     cat; echo 
 } | tee -a log $dir/$(date +%s)
 
-$HOME/bin/scratchpad < log
+readonly python=.env/bin/python
+
+$python html.py < log > index.html
+$python atom.py < log > feed.atom
