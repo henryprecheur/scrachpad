@@ -3,10 +3,6 @@ import common
 from urllib import quote
 
 def page(title, body):
-    style = (
-        open('normalize.css').read() + open('style.css').read()
-    )
-
     return ('''<!DOCTYPE html>
 <html>
 <head>
@@ -14,9 +10,8 @@ def page(title, body):
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' type='text/css'
-     href='http://fonts.googleapis.com/css?family=Anonymous+Pro'>
-    <style>{style}</style>
+    <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Anonymous+Pro'>
+    <link rel="stylesheet" type='text/css' href="style.css">
 </head>
 <body>
 {body}
@@ -38,7 +33,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 </script>
 
 </html>'''
-    ).format(title=title, body=body, style=style)
+    ).format(title=title, body=body)
 
 def article(id, body):
     x = common.markdown(body)
@@ -52,6 +47,8 @@ def article(id, body):
     ).format(id=id, url=quote(id), body=x)
 
 if __name__ == '__main__':
+    posts = common.posts(sys.stdin)
+
     articles = list(
         (i, article(i, b))
         for i, b in reversed(common.posts(sys.stdin))

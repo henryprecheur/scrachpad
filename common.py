@@ -1,9 +1,11 @@
 import io
-from markdown2 import markdown as _markdown
+
+from dateutil.parser import parse
+from markdown2 import markdown
 
 def posts_iter(input):
     for line in input:
-        id_ = line.rstrip('\n')
+        timestamp = line.rstrip()
 
         if input.next() != '\n':
             raise ValueError('Bad ID separator')
@@ -13,16 +15,24 @@ def posts_iter(input):
             line = input.next()
 
             if line == '\f\n':
-                yield (id_, body.getvalue())
+                yield (
+                    timestamp,
+                    markdown(
+                        body.getvalue(),
+                        extras=('code-friendly', 'smarty-pants'),
+                    )
+                )
                 break
             else:
                 body.write(line)
 
 def posts(input):
-    return list(posts_iter(input))
+    return tuple(reversed(tuple(posts_iter(input))))
 
-def markdown(string):
-    return _markdown(
-        string,
-        extras=('code-friendly', 'smarty-pants')
-    )
+def slug(timestamp):
+    if timestamp < '2014-07':
+        return '#' + timestamp
+    elif timestamp < '2018-03':
+        return timestamp
+    else:
+        return parse(timestamp).strftime('%Y%m%d_%H%M%S')

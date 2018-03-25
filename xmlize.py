@@ -33,7 +33,7 @@ def xmlize(input_, output=None):
         omit_optional_tags=False,
         minimize_boolean_attributes=False,
         use_trailing_solidus=True,
-        quote_attr_values=True)
+        quote_attr_values='spec')
 
     stream = s.serialize(walker(doc), encoding='utf-8')
     if output:
