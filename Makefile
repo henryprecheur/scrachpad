@@ -5,7 +5,7 @@ all: index.html feed.atom
 index.html: log html.py common.py
 	.env/bin/python html.py < log > $@
 
-feed.atom: log atom.py xmlize.py common.py
+feed.atom: log atom.py common.py
 	.env/bin/python atom.py < log > $@
 
 bootstrap:
