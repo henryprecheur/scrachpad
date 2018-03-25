@@ -10,7 +10,7 @@ import (
 	"text/template"
 	"time"
 
-	"github.com/russross/blackfriday"
+	blackfriday "gopkg.in/russross/blackfriday.v2"
 )
 
 type Post struct {
@@ -141,7 +141,7 @@ func processPosts(posts []Post) []HTMLPost {
 			Id:        id,
 			AtomId:    atomId,
 			Timestamp: p.Timestamp.Format(time.RFC3339),
-			Body:      string(blackfriday.MarkdownCommon(p.Body)),
+			Body:      string(blackfriday.Run(p.Body)),
 		}
 		r = append(r, h)
 	}
