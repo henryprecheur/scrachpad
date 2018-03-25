@@ -107,9 +107,10 @@ func parseLog(reader io.Reader) ([]Post, error) {
 // HTML generation
 //
 type HTMLPost struct {
-	Id               string
-	RFC3339Timestamp string
-	Body             string
+	Id        string
+	AtomId    string
+	Timestamp string
+	Body      string
 }
 
 //
@@ -121,21 +122,27 @@ func processPosts(posts []Post) []HTMLPost {
 	var r []HTMLPost
 
 	for _, p := range posts {
-		var id string
+		var id, atomId string
 
 		ts := p.Timestamp
-		if ts.Before(time.Date(2014, 7, 1, 0, 0, 0, 0, time.UTC)) {
-			id = "#" + ts.Format(time.RFC3339)
-		} else if ts.Before(time.Date(2018, 1, 1, 0, 0, 0, 0, time.UTC)) {
+		// keep old IDs intact so they don't get reposted
+		if ts.Before(time.Date(2018, 3, 24, 0, 0, 0, 0, time.UTC)) {
 			id = ts.Format(time.RFC3339)
+			if ts.Before(time.Date(2014, 7, 1, 0, 0, 0, 0, time.UTC)) {
+				atomId = "#" + id
+			} else {
+				atomId = id
+			}
 		} else {
 			id = ts.Format("20060102_150405")
+			atomId = id
 		}
 
 		var h = HTMLPost{
-			Id:               id,
-			RFC3339Timestamp: p.Timestamp.Format(time.RFC3339),
-			Body:             string(blackfriday.MarkdownCommon(p.Body)),
+			Id:        id,
+			AtomId:    atomId,
+			Timestamp: p.Timestamp.Format(time.RFC3339),
+			Body:      string(blackfriday.MarkdownCommon(p.Body)),
 		}
 		r = append(r, h)
 	}
@@ -157,10 +164,10 @@ const atomTemplate = `<?xml version="1.0" encoding="utf-8"?>
 <link rel="self" href="http://henry.precheur.org/scratchpad/feed.atom" />
 <link rel="alternate" type="text/html" href="http://henry.precheur.org/scratchpad/" />{{ range .Posts }}
 <entry>
-  <id>http://henry.precheur.org/scratchpad/{{ .Id }}</id>
-  <link href='http://henry.precheur.org/scratchpad/{{ .Id }}' />
-  <title>{{ .RFC3339Timestamp }}</title>
-  <updated>{{ .RFC3339Timestamp }}</updated>
+  <id>http://henry.precheur.org/scratchpad/{{ .AtomId }}</id>
+  <link href='http://henry.precheur.org/scratchpad/{{ .AtomId }}' />
+  <title>{{ .Timestamp }}</title>
+  <updated>{{ .Timestamp }}</updated>
   <author>
     <name>Henry Pr&#234;cheur</name>
     <email>henry@precheur.org</email>
@@ -182,7 +189,7 @@ func makeAtom(posts []HTMLPost, writer io.Writer) error {
 		Updated string
 		Posts   []HTMLPost
 	}{
-		Updated: posts[0].RFC3339Timestamp,
+		Updated: posts[0].Timestamp,
 		Posts:   posts,
 	}
 	err = tmpl.Execute(writer, x)
@@ -194,42 +201,38 @@ func makeAtom(posts []HTMLPost, writer io.Writer) error {
 }
 
 const htmlPageTemplate = `{{ define "article" }}
-<article id='{{ .Id }}'>
-<time datetime='{{ .RFC3339Timestamp }}' pubdate>
-<a href='http://henry.precheur.org/scratchpad/{{ .Id }}'>{{ .RFC3339Timestamp }}</a></time>
+<article id='{{ .Timestamp }}'>
+<time datetime='{{ .Timestamp }}' pubdate><a href='{{ urlquery .Id }}'>{{ .Timestamp }}</a></time>
 {{ .Body }}
 </article>
 {{ end }}<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>{{ .Title }}</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Anonymous+Pro'>
-<style>{{ .Style }}</style>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{{ .Title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Anonymous+Pro'>
+    <style>{{ .Style }}</style>
 </head>
 <body>
 {{ block "body" . }}{{ template "article" .Post }}{{ end }}
 </body>
 <footer>Contact me: <a href='mailto:Henry Precheur <henry@precheur.org>'>Henry Pr&ecirc;cheur</a></footer>
 <script type="text/javascript">
-
 var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-20945988-4']);
 _gaq.push(['_trackPageview']);
-
 (function() {
- var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
- ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
- var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 })();
 </script>
 </html>`
 
 const htmlIndexTemplate = `{{ define "body" }}<header>Spreading my ignorange</header>
-{{ range .Posts }}{{ template "article" . }}{{ end }}
-{{ end }}`
+{{ range .Posts }}{{ template "article" . }}{{ end }}{{ end }}`
 
 func readStyle() (string, error) {
 	norm, err := ioutil.ReadFile("normalize.css")
@@ -242,9 +245,12 @@ func readStyle() (string, error) {
 	}
 	var buf bytes.Buffer
 	buf.Write(norm)
-	buf.Write([]byte("\n"))
 	buf.Write(style)
 	return buf.String(), nil
+}
+
+func openFile(filename string) (*File, error) {
+
 }
 
 func makeIndexHTML(base *template.Template, posts []HTMLPost, style string) error {
@@ -269,8 +275,14 @@ func makeIndexHTML(base *template.Template, posts []HTMLPost, style string) erro
 	}
 
 	err = indexTmpl.Execute(indexFile, x)
-	indexFile.Close()
+	if err1 := indexFile.Close(); err == nil {
+		err = err1
+	}
 	return err
+}
+
+func makePagesHTML(tmpl *template.Template, posts []HTMLPost, style string) error {
+
 }
 
 func makeHTML(posts []HTMLPost) error {
