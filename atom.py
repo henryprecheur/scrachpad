@@ -1,6 +1,8 @@
 import io
 import sys
 
+from urllib import quote
+from dateutil.parser import parse
 import xml.etree
 import html5lib
 
@@ -47,6 +49,14 @@ def xmlize(input_, output=None):
         return u''.join(unicode(x, 'utf8') for x in stream)
     stdout.write(xmlize(stdin))
 
+def atom_id(timestamp):
+    if timestamp < '2014-07':
+        return '#' + timestamp
+    elif timestamp < '2018-04':
+        return timestamp
+    else:
+        return parse(timestamp).strftime('%Y%m%d_%H%M%S')
+
 
 if __name__ == '__main__':
     posts = common.posts(sys.stdin)
@@ -65,12 +75,13 @@ if __name__ == '__main__':
 '''.format(time=updated))
 
     for timestamp, body in posts:
-        entry_id = common.slug(timestamp)
+        entry_id = atom_id(timestamp)
+        slug = quote(common.slug(timestamp))
 
         out('''\
 <entry>
   <id>http://henry.precheur.org/scratchpad/{entry_id}</id>
-  <link href='http://henry.precheur.org/scratchpad/{entry_id}' />
+  <link href='http://henry.precheur.org/scratchpad/{slug}' />
   <title>{timestamp}</title>
   <updated>{timestamp}</updated>
   <author>
@@ -79,7 +90,7 @@ if __name__ == '__main__':
   </author>
   <content type="xhtml">
     <div xmlns="http://www.w3.org/1999/xhtml">
-'''.format(timestamp=timestamp, entry_id=entry_id))
+'''.format(timestamp=timestamp, entry_id=entry_id, slug=slug))
         x = xmlize(body)
         out(x.encode('utf8', 'xmlcharrefreplace'))
         out('    </div>\n  </content>\n</entry>\n')

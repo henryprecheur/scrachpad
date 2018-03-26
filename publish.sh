@@ -11,5 +11,5 @@ test -d $dir || mkdir $dir
 
 readonly python=.env/bin/python
 
-$python html.py < log > index.html
+$python html.py < log
 $python atom.py < log > feed.atom

@@ -30,9 +30,7 @@ def posts(input):
     return tuple(reversed(tuple(posts_iter(input))))
 
 def slug(timestamp):
-    if timestamp < '2014-07':
-        return '#' + timestamp
-    elif timestamp < '2018-03':
+    if timestamp < '2018-04':
         return timestamp
     else:
         return parse(timestamp).strftime('%Y%m%d_%H%M%S')

@@ -35,33 +35,43 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 </html>'''
     ).format(title=title, body=body)
 
-def article(id, body):
-    x = common.markdown(body)
-    x = x.encode('utf8', 'xmlcharrefreplace')
+def index_article(timestamp, body):
+    slug = common.slug(timestamp)
     return (
-        "<article id='{id}'>\n"
-        "<time datetime='{id}' pubdate>"
-        "<a href='{url}'>{id}</a></time>\n"
+        "<article id='{slug}'>\n"
+        "<time datetime='{timestamp}' pubdate>"
+        "<a href='{href}'>{timestamp}</a></time>\n"
         "{body}\n"
         "</article>\n"
-    ).format(id=id, url=quote(id), body=x)
+    ).format(href=quote(slug),
+             slug=slug,
+             timestamp=timestamp,
+             body=body)
+
+def page_article(timestamp, body):
+    return (
+        "<article id='{slug}'>\n"
+        "<time datetime='{timestamp}' pubdate>{timestamp}</time>\n"
+        "{body}\n"
+        "</article>\n"
+    ).format(slug=common.slug(timestamp),
+             timestamp=timestamp,
+             body=body)
 
 if __name__ == '__main__':
-    posts = common.posts(sys.stdin)
-
-    articles = list(
-        (i, article(i, b))
-        for i, b in reversed(common.posts(sys.stdin))
+    posts = list(
+        (timestamp, body.encode('utf8', 'xmlcharrefreplace'))
+        for timestamp, body in common.posts(sys.stdin)
     )
 
-    for id, body in articles:
-        open(id + '.html', 'w').write(
-            page(title=id, body=body)
+    for timestamp, body in posts:
+        open(common.slug(timestamp) + '.html', 'w').write(
+            page(title=timestamp, body=page_article(timestamp, body))
         )
 
     body = (
         '<header>Spreading my ignorange</header>' +
-        '\n'.join(i for _, i in articles)
+        '\n'.join(index_article(t, b) for t, b in posts)
     )
 
     open('index.html', 'w').write(
