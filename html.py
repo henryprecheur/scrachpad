@@ -16,8 +16,23 @@ def page(title, body):
 <body>
 {body}
 </body>
-<footer>Contact me: <a href='mailto:Henry Precheur <henry@precheur.org>'>
-Henry Pr&ecirc;cheur</a></footer>
+<footer>
+<p>
+Like this blog? Check out my <a href='http://henry.precheur.org'>other blog</a>
+for more long-form articles.
+</p>
+<p>
+Looking for a backend developper in Vancouver BC or remote? I&rsquo;m open to
+opportunities. <a href='mailto:Henry Precheur <henry@precheur.org>'>Feel free
+to contact me</a>.
+</p>
+<p>
+Have something to say about what you read?<br>
+My Email is <a href='mailto:Henry Precheur <henry@precheur.org>'>
+Henry Pr&ecirc;cheur &lt;henry@precheur.org&gt;</a>
+</p>
+</footer>
+
 <script type="text/javascript">
 
 var _gaq = _gaq || [];
