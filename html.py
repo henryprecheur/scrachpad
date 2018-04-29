@@ -12,7 +12,6 @@ def page(title, body):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Anonymous+Pro'>
     <link rel="stylesheet" type='text/css' href="style.css">
-    <base href='/scratchpad'>
 </head>
 <body>
 {body}
@@ -52,7 +51,7 @@ def index_article(timestamp, body):
 def page_article(timestamp, body):
     return (
         "<article id='{slug}'>\n"
-        "<div><a href='/'>Index</a></div>\n<hr/>\n"
+        "<div><a href='/scratchpad'>Index</a></div>\n<hr/>\n"
         "<time datetime='{timestamp}' pubdate>{timestamp}</time>\n"
         "{body}\n"
         "</article>\n"
