@@ -379,33 +379,6 @@ a:hover { border-bottom: 1px solid }
 strong { font-weight: 700; }
 em, dt { font-style: italic; }
 
-@font-face {
-        font-family: 'Charter';
-        src: url('charter/regular.eot');
-        src: url('charter/regular.eot?#iefix') format('embedded-opentype'),
-        url('charter/regular.woff') format('woff');
-        font-weight: normal;
-        font-style: normal;
-}
-
-@font-face {
-        font-family: 'Charter';
-        src: url('charter/italic.eot');
-        src: url('charter/italic.eot?#iefix') format('embedded-opentype'),
-        url('charter/italic.woff') format('woff');
-        font-weight: normal;
-        font-style: italic;
-}
-
-@font-face {
-        font-family: 'Charter';
-        src: url('charter/bold-italic.eot');
-        src: url('charter/bold-italic.eot?#iefix') format('embedded-opentype'),
-        url('charter/bold-italic.woff') format('woff');
-        font-weight: bold;
-        font-style: italic;
-}
-
 @media (max-width: 590px){html{font-size:12px}}
 @media (min-width: 590px){html{font-size:13px}}
 @media (min-width: 660px){html{font-size:14px}}

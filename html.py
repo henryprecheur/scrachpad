@@ -10,7 +10,6 @@ def page(title, body):
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>{title}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Anonymous+Pro'>
     <link rel="stylesheet" type='text/css' href="style.css">
 </head>
 <body>
@@ -23,12 +22,12 @@ for more long-form articles.
 </p>
 <p>
 Looking for a backend developper in Vancouver BC or remote? I&rsquo;m open to
-opportunities. <a href='mailto:Henry Precheur <henry@precheur.org>'>Feel free
+opportunities. <a href='mailto:henry@precheur.org'>Feel free
 to contact me</a>.
 </p>
 <p>
 Have something to say about what you read?<br>
-My Email is <a href='mailto:Henry Precheur <henry@precheur.org>'>
+My Email is <a href='mailto:henry@precheur.org'>
 Henry Pr&ecirc;cheur &lt;henry@precheur.org&gt;</a>
 </p>
 </footer>
@@ -44,8 +43,39 @@ var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async
 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 }})();
-
 </script>
+<style>
+@import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
+@font-face {{
+        font-family: 'Charter';
+        src: url('charter/regular.eot');
+        src: url('charter/regular.eot?#iefix') format('embedded-opentype'),
+        url('charter/regular.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+        font-display: fallback;
+}}
+
+@font-face {{
+        font-family: 'Charter';
+        src: url('charter/italic.eot');
+        src: url('charter/italic.eot?#iefix') format('embedded-opentype'),
+        url('charter/italic.woff') format('woff');
+        font-weight: normal;
+        font-style: italic;
+        font-display: fallback;
+}}
+
+@font-face {{
+        font-family: 'Charter';
+        src: url('charter/bold-italic.eot');
+        src: url('charter/bold-italic.eot?#iefix') format('embedded-opentype'),
+        url('charter/bold-italic.woff') format('woff');
+        font-weight: bold;
+        font-style: italic;
+        font-display: fallback;
+}}
+</style>
 
 </html>'''
     ).format(title=title, body=body)
