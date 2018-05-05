@@ -359,6 +359,8 @@ code, kbd, pre, samp {
 pre {
         margin-left: 1em;
         line-height: 125%;
+        font-size: 90%;
+        overflow: scroll;
 }
 blockquote {
         font-size: 90%;
@@ -366,7 +368,6 @@ blockquote {
         line-height: 120%;
 }
 article > time { font-size: 80% }
-pre { font-size: 90% }
 h1, h2, header, footer {
         font-style: italic;
         text-align: center;
