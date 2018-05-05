@@ -15,9 +15,6 @@
     <name>Henry Pr&#234;cheur</name>
     <email>henry@precheur.org</email>
   </author>
-  <content type="xhtml">
-    <div xmlns="http://www.w3.org/1999/xhtml">
-{{ .Body }}</div>
-  </content>
+  <content type="html"><![CDATA[{{ .Body }}]]></content>
 </entry>{{ end }}
 </feed>
