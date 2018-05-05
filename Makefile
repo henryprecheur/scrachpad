@@ -1,6 +1,9 @@
 all:
 	scratchpad < log
 
+install: glide
+	go install
+
 scratchpad: glide
 	go build
 
