@@ -343,7 +343,7 @@ template {
 /* End of normalize.css */
 body {
         margin: 0 auto;
-        max-width: 38em;
+        max-width: 42em;
         font-family: 'Charter', Georgia, 'DejaVu Serif', Times, serif;
         line-height: 140%;
         background-color: #fff;
@@ -360,7 +360,7 @@ pre {
         margin-left: 1em;
         line-height: 125%;
         font-size: 90%;
-        overflow: scroll;
+        overflow: auto;
 }
 blockquote {
         font-size: 90%;
