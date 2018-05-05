@@ -1,16 +1,14 @@
 VIRTUALENV=virtualenv
+SCRATCHPAD=scratchpad
 
-all: index.html feed.atom
+all:
+	./scratchpad < log
 
-index.html: log html.py common.py
-	.env/bin/python html.py < log > $@
+scratchpad: glide
+	go build
 
-feed.atom: log atom.py common.py
-	.env/bin/python atom.py < log > $@
-
-bootstrap:
-	$(VIRTUALENV) .env
-	.env/bin/pip install -r requirements.txt
+glide:
+	glide install
 
 log:
 	curl -s http://henry.precheur.org/scratchpad/log > log
