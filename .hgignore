@@ -7,3 +7,5 @@ normalize.css
 style.css
 .*\.pyc
 20.*\.html
+vendor/*
+scratchpad
