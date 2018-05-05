@@ -1,8 +1,5 @@
-VIRTUALENV=virtualenv
-SCRATCHPAD=scratchpad
-
 all:
-	./scratchpad < log
+	scratchpad < log
 
 scratchpad: glide
 	go build
