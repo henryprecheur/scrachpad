@@ -32,16 +32,12 @@ def stats(texts):
 def html(posts, output):
     output.write('''<!DOCTYPE html>
 <title>Scratchpad stats</title>
-<style>
-    li { border-color: black; border-style: solid }
-</style>
 <ul>
 ''')
     for week, texts in sort_by_week(posts):
         chars, words = stats(texts)
-        style = 'border-width: 0 {}px 0 {}px'
-        output.write('  <li style="{style}">{week}</li>\n'.\
-                     format(style=style.format(chars // 10, words), week=week))
+        output.write('  <li>{week} chars: {chars} words: {words}</li>\n'.\
+                     format(chars=chars, words=words, week=week))
     output.write('</table>\n')
 
 def console(posts):
