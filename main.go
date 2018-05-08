@@ -7,7 +7,6 @@ import (
 	"io"
 	"log"
 	"os"
-	"text/template"
 	"time"
 
 	blackfriday "gopkg.in/russross/blackfriday.v2"
@@ -159,55 +158,33 @@ func openFile(filename string) (*os.File, error) {
 }
 
 func makeAtom(posts []HTMLPost) error {
-	tmpl, err := template.New("feed.atom.template").ParseFiles("feed.atom.template")
-	if err != nil {
-		return err
-	}
-
 	output, err := openFile("feed.atom")
+	defer output.Close()
 	if err != nil {
 		return err
 	}
 
-	err = tmpl.Execute(output, posts)
-	if err != nil {
-		return err
-	}
-
-	return nil
+	return AtomTemplate.Execute(output, posts)
 }
 
 func makeIndexHTML(posts []HTMLPost) error {
-	tmpl, err := template.New("index.html.template").ParseFiles("index.html.template")
+	output, err := openFile("index.html")
 	if err != nil {
 		return err
 	}
+	defer output.Close()
 
-	indexFile, err := openFile("index.html")
-	if err != nil {
-		return err
-	}
-
-	err = tmpl.Execute(indexFile, posts)
-	if err1 := indexFile.Close(); err == nil {
-		err = err1
-	}
-	return err
+	return IndexTemplate.Execute(output, posts)
 }
 
 func makePagesHTML(posts []HTMLPost) error {
-	tmpl, err := template.New("page.html.template").ParseFiles("page.html.template")
-	if err != nil {
-		return err
-	}
-
 	for _, post := range posts {
 		var file, err = openFile(post.Id + ".html")
 		if err != nil {
 			return err
 		}
 
-		err = tmpl.Execute(file, post)
+		err = PostTemplate.Execute(file, post)
 		if err1 := file.Close(); err == nil {
 			err = err1
 		}
@@ -227,7 +204,8 @@ func makeHTML(posts []HTMLPost) error {
 }
 
 func main() {
-	var posts, err = parseLog(bufio.NewReader(os.Stdin))
+
+	posts, err := parseLog(bufio.NewReader(os.Stdin))
 	if err != io.EOF {
 		log.Fatalf("error while parsing: %s", err)
 	}
