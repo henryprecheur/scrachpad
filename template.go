@@ -30,16 +30,6 @@ My Email is <a href='mailto:henry@precheur.org'>
 Henry Pr&ecirc;cheur &lt;henry@precheur.org&gt;</a>
 </p>
 </footer>
-<script type="text/javascript">
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-20945988-4']);
-_gaq.push(['_trackPageview']);
-(function() {
-var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-})();
-</script>
 <style>
 @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
 @font-face {
@@ -70,6 +60,16 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
         font-display: fallback;
 }
 </style>
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-20945988-4']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
 </html>{{end}}`
 	index = `{{define "body"}}<header>Spreading my ignorange</header>{{ range . }}
 <article id='{{ .Id }}'>
