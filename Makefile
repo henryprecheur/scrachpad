@@ -20,8 +20,7 @@ serve:
 	python -m SimpleHTTPServer
 
 clean:
-	rm -f 20[1-9]*.html 20[1-9]*/index.html index.html feed.atom
-	rmdir 20[1-9]*/
+	-rm -rf 20[1-9]*.html index.html feed.atom 20[1-9]*/
 
 release: scratchpad
 	scp scratchpad henry.precheur.org:/var/www/henry.precheur.org/scratchpad
