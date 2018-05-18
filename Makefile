@@ -1,5 +1,5 @@
 all:
-	scratchpad < log
+	./scratchpad < log
 
 install: glide
 	go install
@@ -16,7 +16,11 @@ log:
 relog:
 	curl -s http://henry.precheur.org/scratchpad/log > log
 
+serve:
+	python -m SimpleHTTPServer
+
 clean:
-	rm -f 20[1-9]*.html index.html feed.atom
+	rm -f 20[1-9]*.html 20[1-9]*/index.html index.html feed.atom
+	rmdir 20[1-9]*/
 
 .PHONY: clean relog all
