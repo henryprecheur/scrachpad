@@ -82,7 +82,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 <hr/>
 <time datetime='{{ .Timestamp }}' pubdate>{{ .Timestamp }}</time>
 {{.Body}}
-</article>{{end}}{{define "title"}}{{.Timestamp}}{{end}}{{define "stylePrefix"}}../{{end}}{{template "page" .}}`
+</article>{{end}}{{define "title"}}{{.Timestamp}}{{end}}{{define "stylePrefix"}}{{end}}{{template "page" .}}`
 	atom = `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 <id>http://henry.precheur.org/scratchpad</id>
