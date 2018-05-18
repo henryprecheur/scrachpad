@@ -7,6 +7,7 @@ import (
 	"io"
 	"log"
 	"os"
+	"path"
 	"time"
 
 	blackfriday "gopkg.in/russross/blackfriday.v2"
@@ -179,7 +180,12 @@ func makeIndexHTML(posts []HTMLPost) error {
 
 func makePagesHTML(posts []HTMLPost) error {
 	for _, post := range posts {
-		var file, err = openFile(post.Id + ".html")
+		// use subdir to store post
+		if err := os.Mkdir(post.Id, 0777); err != nil && !os.IsExist(err) {
+			return err
+		}
+
+		var file, err = openFile(path.Join(post.Id, "index.html"))
 		if err != nil {
 			return err
 		}

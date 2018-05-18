@@ -10,7 +10,7 @@ const (
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>{{block "title" .}}Scratch pad{{end}}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type='text/css' href="style.css">
+    <link rel="stylesheet" type='text/css' href="{{block "stylePrefix" .}}{{end}}style.css">
 </head>
 <body>
 {{block "body" .}}{{end}}
@@ -34,27 +34,27 @@ Henry Pr&ecirc;cheur &lt;henry@precheur.org&gt;</a>
 @import url('https://fonts.googleapis.com/css?family=Anonymous+Pro');
 @font-face {
         font-family: 'Charter';
-        src: url('charter/regular.eot');
-        src: url('charter/regular.eot?#iefix') format('embedded-opentype'),
-        url('charter/regular.woff') format('woff');
+        src: url('http://henry.precheur.org/scratchpad/charter/regular.eot');
+        src: url('http://henry.precheur.org/scratchpad/charter/regular.eot?#iefix') format('embedded-opentype'),
+        url('{{template "stylePrefix"}}charter/regular.woff') format('woff');
         font-weight: normal;
         font-style: normal;
         font-display: fallback;
 }
 @font-face {
         font-family: 'Charter';
-        src: url('charter/italic.eot');
-        src: url('charter/italic.eot?#iefix') format('embedded-opentype'),
-        url('charter/italic.woff') format('woff');
+        src: url('http://henry.precheur.org/scratchpad/charter/italic.eot');
+        src: url('http://henry.precheur.org/scratchpad/charter/italic.eot?#iefix') format('embedded-opentype'),
+        url('{{template "stylePrefix"}}charter/italic.woff') format('woff');
         font-weight: normal;
         font-style: italic;
         font-display: fallback;
 }
 @font-face {
         font-family: 'Charter';
-        src: url('charter/bold-italic.eot');
-        src: url('charter/bold-italic.eot?#iefix') format('embedded-opentype'),
-        url('charter/bold-italic.woff') format('woff');
+        src: url('http://henry.precheur.org/scratchpad/charter/bold-italic.eot');
+        src: url('http://henry.precheur.org/scratchpad/charter/bold-italic.eot?#iefix') format('embedded-opentype'),
+        url('{{template "stylePrefix"}}charter/bold-italic.woff') format('woff');
         font-weight: bold;
         font-style: italic;
         font-display: fallback;
@@ -75,18 +75,14 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 <article id='{{ .Id }}'>
 <time datetime='{{ .Timestamp }}' pubdate><a href='{{ urlquery .Id }}'>{{ .Timestamp }}</a></time>
 {{.Body}}
-</article>
-{{end}}
-{{end}}
-{{template "page" .}}`
+</article>{{end}}{{end}}{{template "page" .}}`
 	post = `{{define "body"}}
 <article id='{{ .Id }}'>
-<time datetime='{{ .Timestamp }}' pubdate><a href='{{ urlquery .Id }}'>{{ .Timestamp }}</a></time>
+<div><a href='..'>Index</a></div>
+<hr/>
+<time datetime='{{ .Timestamp }}' pubdate>{{ .Timestamp }}</time>
 {{.Body}}
-</article>
-{{end}}
-{{define "title"}}{{.Timestamp}}{{end}}
-{{template "page" .}}`
+</article>{{end}}{{define "title"}}{{.Timestamp}}{{end}}{{define "stylePrefix"}}../{{end}}{{template "page" .}}`
 	atom = `<?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 <id>http://henry.precheur.org/scratchpad</id>
