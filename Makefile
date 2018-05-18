@@ -23,4 +23,7 @@ clean:
 	rm -f 20[1-9]*.html 20[1-9]*/index.html index.html feed.atom
 	rmdir 20[1-9]*/
 
+release: scratchpad
+	scp scratchpad henry.precheur.org:/var/www/henry.precheur.org/scratchpad
+
 .PHONY: clean relog all
