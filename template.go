@@ -78,7 +78,7 @@ var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga
 </article>{{end}}{{end}}{{template "page" .}}`
 	post = `{{define "body"}}
 <article id='{{ .Id }}'>
-<div><a href='..'>Index</a></div>
+<div><a href='/scratchpad/'>Index</a></div>
 <hr/>
 <time datetime='{{ .Timestamp }}' pubdate>{{ .Timestamp }}</time>
 {{.Body}}
