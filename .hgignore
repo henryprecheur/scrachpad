@@ -7,5 +7,7 @@ normalize.css
 style.css
 .*\.pyc
 20.*\.html
+20.*/*
 vendor/*
 scratchpad
+.*\.swp
