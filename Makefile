@@ -28,6 +28,6 @@ clean:
 	-rm -rf 20[1-9]*.html index.html feed.atom 20[1-9]*/
 
 release: scratchpad
-	scp scratchpad henry.precheur.org:/var/www/henry.precheur.org/scratchpad
+	scp -C scratchpad henry.precheur.org:/var/www/henry.precheur.org/scratchpad
 
 .PHONY: clean relog all
