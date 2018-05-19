@@ -16,7 +16,12 @@ log:
 relog:
 	curl -s http://henry.precheur.org/scratchpad/log > log
 
-serve:
+serve: all
+	# create links to deps
+	for i in 20[1-9]*/; do \
+		test -e $$i/style.css || cp ./style.css $$i/; \
+		test -e $$i/charter || cp -r ./charter $$i/; \
+	done
 	python -m SimpleHTTPServer
 
 clean:
