@@ -15,6 +15,7 @@ const (
 <body>
 {{block "body" .}}{{end}}
 <footer>
+<p>Get the latest updates: <a href='feed.atom'>Atom Feed</a></p>
 <p>
 Like this blog? Check out my <a href='http://henry.precheur.org'>other blog</a>
 for more long-form articles.
