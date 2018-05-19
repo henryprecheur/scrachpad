@@ -21,7 +21,7 @@ for more long-form articles.
 </p>
 <p>
 Looking for a full stack developper in Vancouver BC or remote? I&rsquo;m open
-to opportunities, resume available by request. <a
+to opportunities, resume available on request. <a
 href='mailto:henry@precheur.org'>Feel free to contact me</a>.
 </p>
 <p>
